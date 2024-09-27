@@ -41,7 +41,6 @@ private:
 class Board {
 public:
     explicit Board(const size_t x = 10, const size_t y = 10): x_(x), y_(y) {
-
     }
 
     ~Board() = default;
