@@ -1,16 +1,15 @@
-//
-// Created by Alex on 27.09.2024.
-//
-
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
+#include "ship.hpp"
+
+class Board {
+    private:
+        int size_x_, size_y_;
+        std::vector<std::vector<FieldCell>> field_;
 
 
-class board {
 
 };
 
-
-
-#endif //BOARD_HPP
+#endif // BOARD_HPP

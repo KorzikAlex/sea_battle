@@ -1,12 +1,15 @@
-#ifndef SHIPMANAGER_HPP
-#define SHIPMANAGER_HPP
+#ifndef SHIP_MANAGER_HPP
+#define SHIP_MANAGER_HPP
+
+#include <ship.hpp>
 
 
-
-class shipmanager {
-
+class ShipManager
+{
+private:
+    std::vector<Ship> ships_;
+public:
+    explicit ShipManager(std::vector<Ship> ships): ships_(ships) {}; 
 };
 
-
-
-#endif //SHIPMANAGER_HPP
+#endif // SHIP_MANAGER_HPP

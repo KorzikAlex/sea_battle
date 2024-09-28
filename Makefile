@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wconversion -Weffc++ -Wfloat-equal -fstack-protector-strong -fPIE -pie -O2 -g -fsanitize=address -fsanitize=undefined -fno-strict-aliasing -DDEBUG -fvisibility=hidden
-LIBS =
+LIBS = 
 SRCDIR = src
 INCDIR = include
 OBJDIR = build
