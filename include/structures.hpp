@@ -1,15 +1,13 @@
 #ifndef SEABATTLE_STRUCTURES_HPP
 #define SEABATTLE_STRUCTURES_HPP
 
-enum class SegmentStatus
-{
+enum class SegmentStatus {
     kWhole,
     kDamaged,
     kDestroyed
 };
 
-enum class CellStatus
-{
+enum class CellStatus {
     kHidden,
     kEmpty
 };
@@ -26,14 +24,16 @@ struct Coord
     int y;
 };
 
-struct Segment {
+struct Segment
+{
     Coord pos;
     SegmentStatus health;
 };
 
-struct Cell {
+struct Cell
+{
     Coord pos;
-    CellStatus state;
+    CellStatus status;
     Segment* segment = nullptr;
 };
 
