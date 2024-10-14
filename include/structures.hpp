@@ -1,32 +1,40 @@
-#ifndef STRUCTURES_HPP
-#define STRUCTURES_HPP
+#ifndef SEABATTLE_STRUCTURES_HPP
+#define SEABATTLE_STRUCTURES_HPP
 
 enum class SegmentStatus
 {
-    Whole,
-    Damaged,
-    Destroyed
+    kWhole,
+    kDamaged,
+    kDestroyed
 };
-enum class ShipStatus
+
+enum class CellStatus
 {
-    Whole,
-    Damaged,
-    Destroyed
+    kHidden,
+    kEmpty
 };
-enum class CeilStatus
-{
-    hidden,
-    visible
-};
+
 enum class Orientation
 {
-    Horizontal,
-    Vertical
+    kHorizontal,
+    kVertical
 };
 
 struct Coord
 {
-    int x_, y_;
+    int x;
+    int y;
+};
+
+struct Segment {
+    Coord pos;
+    SegmentStatus health;
+};
+
+struct Cell {
+    Coord pos;
+    CellStatus state;
+    Segment* segment = nullptr;
 };
 
 #endif // STRUCTURES_HPP

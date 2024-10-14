@@ -1,15 +1,18 @@
-#ifndef BOARD_HPP
-#define BOARD_HPP
+#ifndef SEABATTLE_BOARD_HPP
+#define SEABATTLE_BOARD_HPP
 
-#include "ship.hpp"
+#include <vector>
 
-class Board {
+#include "structures.hpp"
+
+class Board
+{
+    public:
+        explicit Board(int size_x, int size_y);
+        void setShip(Coord set_coord);
     private:
-        int size_x_, size_y_;
-        std::vector<std::vector<FieldCell>> field_;
-
-
-
+        const int size_x_, size_y_;
+        std::vector<std::vector<Cell>> field_;
 };
 
 #endif // BOARD_HPP

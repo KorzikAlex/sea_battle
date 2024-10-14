@@ -1,19 +1,31 @@
-#ifndef SHIP_H
-#define SHIP_H
+#ifndef SEABATTLE_SHIP_H
+#define SEABATTLE_SHIP_H
+
+#include <iostream>
+#include <vector>
 
 #include "structures.hpp"
 
-#include <vector>
+class Ship {
+    public:
+        explicit Ship(int size, Orientation orientation);
+        explicit Ship(int size, int orientation);
+        explicit Ship(int size);
 
-class Ship{
-public:
-    explicit Ship(int size, Orientation orientation) : size_(size), orientation_(orientation) {};
-    explicit Ship(int size, int orientation) : size_(size), orientation_(orientation ? Orientation::Horizontal : Orientation::Vertical) {};
-    ~Ship() = default;
-private:
-    int size_;
-    Orientation orientation_ = Orientation::Horizontal;
-    std::vector<SegmentStatus> segments_;
+        ~Ship();
+
+        bool isHorizontal() const;
+        bool isVertical() const;
+        int getSize() const;
+        std::vector<Segment> getSegments() const;
+        void info() const;
+        
+        void changeOrientation();
+
+    private:
+        int size_;
+        Orientation orientation_;
+        std::vector<Segment> segments_;
 };
 
 #endif // SHIP_H
