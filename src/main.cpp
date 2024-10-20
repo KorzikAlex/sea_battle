@@ -23,15 +23,16 @@
  * @param argv 
  * @return int 
  */
-int main(int argc, char *argv[])
-{
-    
-    // Board self_board = Board(10, 10);
-    // Board enemy_board = Board(10, 10);
+int main(int argc, char *argv[]) {
+    Board self_board = Board(10, 10);
+    Board enemy_board = Board(10, 10);
 
-    // std::vector<int> shipSizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    // ShipManager self_manager = ShipManager(shipSizes.size(), shipSizes);
-    // ShipManager enemy_manager = ShipManager(shipSizes.size(), shipSizes);
-    
+    std::vector<int> ship_sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    ShipManager self_manager = ShipManager(ship_sizes);
+    ShipManager enemy_manager = ShipManager(ship_sizes);
+
+    // self_board.init(self_manager.getShips());
+    // enemy_board.init(self_manager.getShips());
+
     return 0;
 }

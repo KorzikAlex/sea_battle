@@ -1091,6 +1091,20 @@ EXCLUDE_PATTERNS       = */Chuban_Project \
                             .gitignore \
                             tests \
                             build \
+                            cmake-build-debug \
+                            cmake-build-release \
+                            labs \
+                            .vscode \
+                            .idea \
+                            docs.sh \
+                            build.sh \
+                            clear_build.sh \
+                            clear_docs.sh \
+                            _deps \
+                            bin \
+                            .cmake
+
+
                             
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names

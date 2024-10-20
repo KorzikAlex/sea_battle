@@ -9,32 +9,45 @@ enum class SegmentStatus {
 
 enum class CellStatus {
     kHidden,
-    kEmpty
+    kRevealed
 };
 
-enum class Orientation
-{
+enum class Orientation {
     kHorizontal,
     kVertical
 };
 
-struct Coord
-{
+enum class ShipStatus {
+    kWhole,
+    kDestroyed
+};
+
+struct Coord {
     int x;
     int y;
 };
 
-struct Segment
-{
-    Coord pos;
+struct Segment {
     SegmentStatus health;
+    void handleDamage() {
+        switch (health) {
+            case SegmentStatus::kWhole: {
+                health = SegmentStatus::kDamaged;
+                break;
+            }
+            case SegmentStatus::kDamaged: {
+                health = SegmentStatus::kDestroyed;
+                break;
+            }
+            default:
+                break;
+        }
+    }
 };
 
-struct Cell
-{
-    Coord pos;
-    CellStatus status;
+struct Cell {
+    CellStatus status = CellStatus::kHidden;
     Segment* segment = nullptr;
 };
 
-#endif // STRUCTURES_HPP
+#endif // SEABATTLE_STRUCTURES_HPP

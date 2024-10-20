@@ -25,9 +25,18 @@ add_library(shipmanager ${modules}/shipmanager.cpp)
 
 add_executable(${main} src/main.cpp)
 
-target_link_libraries(${main} sfml-graphics)
 target_compile_features(${main} PRIVATE cxx_std_17)
+target_link_libraries(${main} sfml-graphics)
 target_link_libraries(${main} ship)
 target_link_libraries(${main} board)
 target_link_libraries(${main} shipmanager)
 
+FIND_PACKAGE(Doxygen)
+IF(DOXYGEN_FOUND)
+    SET(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR})
+    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    ADD_CUSTOM_TARGET(doc COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+ELSE(DOXYGEN_FOUND)
+    
+    MESSAGE(STATUS "WARNING: Doxygen not found - Reference manual will not be created")
+ENDIF(DOXYGEN_FOUND)
