@@ -5,38 +5,36 @@ project(sea_battle LANGUAGES CXX)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-set (main seabattle.out)
-set (modules src/modules)
+set(main seabattle.out)
+set(modules src/modules)
+set(SOURCES src/main.cpp ${modules}/board.cpp ${modules}/ship.cpp ${modules}/shipmanager.cpp)
 
 include_directories("include")
-
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
-
 add_library(ship ${modules}/ship.cpp)
 add_library(board ${modules}/board.cpp)
 add_library(shipmanager ${modules}/shipmanager.cpp)
 
-add_executable(${main} src/main.cpp)
+include(FetchContent)
+FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM)
+FetchContent_MakeAvailable(SFML)
+
+
+add_executable(${main} ${SOURCES})
 
 target_compile_features(${main} PRIVATE cxx_std_17)
-target_link_libraries(${main} sfml-graphics)
-target_link_libraries(${main} ship)
-target_link_libraries(${main} board)
-target_link_libraries(${main} shipmanager)
+target_link_libraries(${main} board ship shipmanager sfml-graphics)
 
-FIND_PACKAGE(Doxygen)
-IF(DOXYGEN_FOUND)
-    SET(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR})
-    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-    ADD_CUSTOM_TARGET(doc COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-ELSE(DOXYGEN_FOUND)
-    
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR})
+    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+    add_custom_target(COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+else (DOXYGEN_FOUND)
+
     MESSAGE(STATUS "WARNING: Doxygen not found - Reference manual will not be created")
-ENDIF(DOXYGEN_FOUND)
+endif (DOXYGEN_FOUND)

@@ -1,21 +1,21 @@
+/**
+ * @file shipmanager.cpp
+ * @author KorzikAlex (alek.korshkov@yandex.ru)
+ * @brief Implementation of ShipManager Module
+ * @version 0.1
+ * @date 2024-10-20
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "shipmanager.hpp"
 
 ShipManager::ShipManager(std::vector<int> sizes) {
-    for (int size:sizes) this->ships_.push_back(Ship(size));
-};
+    for (int size: sizes) this->ships_.push_back(Ship(size));
+}
 
-ShipManager::ShipManager(const ShipManager& other): ships_(other.ships_) {};
-
-ShipManager::ShipManager(ShipManager&& other) noexcept: ships_(std::move(other.ships_)){};
-
-ShipManager& ShipManager::operator=(const ShipManager& other) {
-    if (this != &other) this->ships_ = other.ships_;
-    return *this;
-};
-
-ShipManager &ShipManager::operator=(ShipManager &&other) noexcept {
-    if (this != &other) ships_ = std::move(other.ships_);
-    return *this;
+Ship &ShipManager::operator[](int index) {
+    return this->getShip(index);
 };
 
 int ShipManager::getShipCount() const {

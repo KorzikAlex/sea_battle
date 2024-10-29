@@ -1,3 +1,13 @@
+/**
+ * @file structures.hpp
+ * @author KorzikAlex (alek.korshkov@yandex.ru)
+ * @brief Structures for modules
+ * @version 0.1
+ * @date 2024-10-20
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef SEABATTLE_STRUCTURES_HPP
 #define SEABATTLE_STRUCTURES_HPP
 
@@ -22,32 +32,30 @@ enum class ShipStatus {
     kDestroyed
 };
 
+/**
+ * @brief Struct of coordinates
+ * 
+ */
 struct Coord {
     int x;
     int y;
 };
 
+/**
+ * @brief Struct for Ship Segment
+ * 
+ */
 struct Segment {
-    SegmentStatus health;
-    void handleDamage() {
-        switch (health) {
-            case SegmentStatus::kWhole: {
-                health = SegmentStatus::kDamaged;
-                break;
-            }
-            case SegmentStatus::kDamaged: {
-                health = SegmentStatus::kDestroyed;
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    SegmentStatus health = SegmentStatus::kWhole;
 };
 
+/**
+ * @brief Struct for Cell of Board
+ * 
+ */
 struct Cell {
     CellStatus status = CellStatus::kHidden;
-    Segment* segment = nullptr;
+    Segment *segment = nullptr;
 };
 
 #endif // SEABATTLE_STRUCTURES_HPP
