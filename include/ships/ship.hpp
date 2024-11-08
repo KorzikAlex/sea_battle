@@ -8,17 +8,40 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_SHIPS_SHIP_HPP
-#define SEABATTLE_SHIPS_SHIP_HPP
+#ifndef SEABATTLE_INCLUDE_SHIPS_SHIP_HPP
+#define SEABATTLE_INCLUDE_SHIPS_SHIP_HPP
 
 #include <vector>
-#include <iostream>
-
-#include "structures.hpp"
-
 
 class Ship {
 public:
+    /**
+     * @brief Orientation of Ship enum class
+     * 
+     */
+    enum class Orientation {
+        kHorizontal,
+        kVertical
+    };
+
+    struct Segment {
+        /**
+         * @brief Status of health segment
+         * 
+         */
+        enum class SegmentStatus {
+            kWhole,
+            kDamaged,
+            kDestroyed
+        };
+        SegmentStatus health = SegmentStatus::kWhole;
+        /**
+         * @brief function to deal damage on segment
+         * 
+         */
+        void handleDamage();
+    };
+
     /**
      * @brief Constructor of new Ship object
      *
@@ -26,6 +49,7 @@ public:
      * @param orientation
      */
     explicit Ship(int size, Orientation orientation = Orientation::kHorizontal);
+
     /**
     * @brief Overloading operator [] to get reference of SHip's segment
     *
@@ -111,4 +135,4 @@ private:
     std::vector<Segment> segments_;
 };
 
-#endif // SEABATTLE_SHIPS_SHIP_HPP
+#endif // SEABATTLE_INCLUDE_SHIPS_SHIP_HPP

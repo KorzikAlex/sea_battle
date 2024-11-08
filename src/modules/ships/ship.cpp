@@ -8,19 +8,22 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include "ship.hpp"
+
+#include <iostream>
+
+#include "ships/ship.hpp"
+
+void Ship::Segment::handleDamage() {
+    if (this->health == SegmentStatus::kWhole) this->health = SegmentStatus::kDamaged;
+    else if (this->health == SegmentStatus::kDamaged) this->health = SegmentStatus::kDestroyed;
+}
 
 Ship::Ship(int size, Orientation orientation): size_(size), orientation_(orientation) {
     if (this->size_ < 1 || this->size_ > 4) throw std::invalid_argument("Size of ship must be between 1 and 4");
     this->segments_ = std::vector<Segment>(this->size_);
 };
 
-Ship::Ship(int size): size_(size), orientation_(Orientation::kHorizontal) {
-    if (this->size_ < 1 || this->size_ > 4) throw std::invalid_argument("Length of ship must be between 1 and 4");
-    this->segments_ = std::vector<Segment>(this->size_);
-};
-
-Segment &Ship::operator[](int index) {
+Ship::Segment &Ship::operator[](int index) {
     return this->segments_.at(index);
 };
 
@@ -33,11 +36,11 @@ bool Ship::isVertical() const {
 };
 
 bool Ship::isDestroyed() const {
-    for (auto segment: this->segments_) if (segment.health != SegmentStatus::kDestroyed) return false;
+    for (const auto segment: this->segments_) if (segment.health != Segment::SegmentStatus::kDestroyed) return false;
     return true;
 };
 
-Orientation Ship::getOrientation() const {
+Ship::Orientation Ship::getOrientation() const {
     return this->orientation_;
 };
 
@@ -45,7 +48,7 @@ int Ship::getSize() const {
     return this->size_;
 };
 
-Segment *Ship::getSegment(int index) {
+Ship::Segment *Ship::getSegment(int index) {
     return &this->segments_.at(index);
 };
 
@@ -55,15 +58,15 @@ void Ship::info() {
     std::cout << "Segments: ";
     for (int i = 0; i < this->size_; ++i) {
         switch (this->getSegment(i)->health) {
-            case SegmentStatus::kWhole: {
+            case Segment::SegmentStatus::kWhole: {
                 std::cout << i << "+";
                 break;
             };
-            case SegmentStatus::kDamaged: {
+            case Segment::SegmentStatus::kDamaged: {
                 std::cout << i << "-";
                 break;
             };
-            case SegmentStatus::kDestroyed: {
+            case Segment::SegmentStatus::kDestroyed: {
                 std::cout << i << "X";
                 break;
             };

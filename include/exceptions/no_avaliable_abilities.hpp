@@ -1,0 +1,8 @@
+//
+// Created by korzik on 08.11.24.
+//
+
+#ifndef NO_AVALIABLE_ABILITIES_HPP
+#define NO_AVALIABLE_ABILITIES_HPP
+
+#endif //NO_AVALIABLE_ABILITIES_HPP

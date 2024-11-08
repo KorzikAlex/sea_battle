@@ -1,0 +1,8 @@
+//
+// Created by korzik on 08.11.24.
+//
+
+#ifndef INCORRECT_SHIP_POSITION_HPP
+#define INCORRECT_SHIP_POSITION_HPP
+
+#endif //INCORRECT_SHIP_POSITION_HPP

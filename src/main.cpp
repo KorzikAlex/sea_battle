@@ -9,11 +9,11 @@
  * 
  */
 #include <iostream>
-// #include <SFML/Graphics.hpp>
+#include <abilities/ability_manager.hpp>
 
+#include "ships/ship_manager.hpp"
+#include "cli_parser.hpp"
 #include "structures.hpp"
-#include "shipmanager.hpp"
-#include "board.hpp"
 
 /**
  * @brief Main function in program
@@ -23,10 +23,17 @@
  * @return int 
  */
 int main(int argc, char *argv[]) {
-    Board self_board = Board(10, 10);
+    CLIParser parser(argc, argv);
 
-    std::vector<int> ship_sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    ShipManager self_manager = ShipManager(ship_sizes);
+    int size_x = parser.getSizeX();
+    int size_y = parser.getSizeY();
+
+    Board self_board(size_x, size_y);
+
+    const std::vector<int> ship_sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    ShipManager self_manager(ship_sizes);
+
+    AbilityManager self_ability_manager(self_board);
 
     std::vector<Coord> self_coords = {
         {0, 0}, {5, 0}, {0, 2}, {4, 2}, {7, 2},
@@ -34,19 +41,24 @@ int main(int argc, char *argv[]) {
     };
 
     for (int i = 0; i < self_manager.getShipCount(); ++i)
-        self_board.setShip(self_manager.getShip(i), self_coords[i]);
+        self_board.setShip(self_manager.getShip(i), self_coords.at(i));
 
     self_board.printBoard();
 
-    // self_board.printBoardStatus();
-    std::cout << "------------------------------" << std::endl;
-    self_board.attack(Coord{0, 0});
-    self_board.attack(Coord{1, 0});
-    self_board.attack(Coord{0, 1});
-    self_board.attack(Coord{0, 0});
-    self_board.printBoardStatus();
-    
-    // std::cout << "------------------------------" << std::endl;
+    std::cout << "----------------------------" << std::endl;
+    std::cout << self_ability_manager.returnAbilityName() << std::endl;
+    if (self_ability_manager.returnAbility() == AbilityManager::Abilities::Scanner)
+        self_ability_manager.useAbility({0, 0});
+    else if (self_ability_manager.returnAbility() == AbilityManager::Abilities::RandomAttack)
+        self_ability_manager.useAbility();
+    else if (self_ability_manager.returnAbility() == AbilityManager::Abilities::DoubleAttack)
+        self_ability_manager.useAbility({0, 0});
 
+
+    // TODO: протестировать работу спосбностей на поле
+    // TODO: сканер
+    // TODO: двойная атака
+    // TODO: случайная атака
+    self_board.printBoardStatus();
     return 0;
-}
+};

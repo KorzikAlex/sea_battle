@@ -1,5 +1,5 @@
 /**
- * @file shipmanager.cpp
+ * @file ship_manager.cpp
  * @author KorzikAlex (alek.korshkov@yandex.ru)
  * @brief Implementation of ShipManager Module
  * @version 0.1
@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include "shipmanager.hpp"
+#include "ships/ship_manager.hpp"
 
 ShipManager::ShipManager(std::vector<int> sizes) {
-    for (int size: sizes) this->ships_.push_back(Ship(size));
-}
+    for (const int size: sizes) this->ships_.push_back(Ship(size));
+};
 
 Ship &ShipManager::operator[](int index) {
     return this->getShip(index);
@@ -22,16 +22,12 @@ int ShipManager::getShipCount() const {
     return this->ships_.size();
 };
 
-Ship& ShipManager::getShip(int index) {
-    return this->ships_[index];
+Ship &ShipManager::getShip(int index) {
+    return this->ships_.at(index);
 };
 
 void ShipManager::addShip(int size) {
     this->ships_.push_back(Ship(size));
-};
-
-void ShipManager::addShip(Ship ship) {
-    this->ships_.push_back(ship);
 };
 
 void ShipManager::eraseShip(int index) {

@@ -8,16 +8,24 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include "board.hpp"
-#include "ship.hpp"
 
-Board::Board(int size_x = 10, int size_y = 10) : size_x_(size_x), size_y_(size_y) {
-    for (int y = 0; y < size_y_; ++y) {
-        std::vector<Cell> row;
-        for (int x = 0; x < size_x_; ++x) row.push_back(Cell{CellStatus::kHidden, nullptr});
-        this->field_.push_back(row);
-    }
+#include <stdexcept>
+#include <iostream>
+
+#include "board.hpp"
+#include "ships/ship.hpp"
+
+void Board::Cell::changeStatus() {
+    if (this->status == CellVisibilityStatus::kHidden) this->status = CellVisibilityStatus::kRevealed;
 }
+
+bool Board::Cell::isSegmentAt() const {
+    return this->segment != nullptr;
+}
+
+Board::Board(int size_x = 10, int size_y = 10) : size_x_(size_x), size_y_(size_y),
+                                                 field_(this->size_y_, std::vector<Cell>(this->size_x_)) {
+};
 
 Board::Board(const Board &other): size_x_(other.size_x_), size_y_(other.size_y_), field_(other.field_) {
 };
@@ -63,24 +71,21 @@ bool Board::checkCoord(Coord coord) const {
 
 bool Board::checkCoordAround(Coord coord) {
     if (!this->checkCoord(coord)) return false;
-    for (int i = -1; i <= 1; ++i) {
-        for (int j = -1; j <= 1; ++j) {
-            if (this->checkCoord(Coord{coord.x + i, coord.y + j})) {
+    for (int i = -1; i <= 1; ++i)
+        for (int j = -1; j <= 1; ++j)
+            if (this->checkCoord(Coord{coord.x + i, coord.y + j}))
                 if (this->isShipAtBoard(Coord{coord.x + i, coord.y + j})) return false;
-            }
-        }
-    }
     return true;
 };
 
 bool Board::isShipAtBoard(Coord coord) {
-    Cell &cell = this->getCell(coord);
-    return (cell.segment != nullptr);
+    Cell &board_cell = this->getCell(coord);
+    return (board_cell.segment != nullptr);
 };
 
 
-Cell &Board::getCell(Coord coord) {
-    if (this->checkCoord(coord)) return this->field_[coord.y][coord.x];
+Board::Cell &Board::getCell(Coord coord) {
+    if (this->checkCoord(coord)) return this->field_.at(coord.y).at(coord.x);
     throw std::out_of_range("Coordinate out of range");
 };
 
@@ -89,16 +94,9 @@ bool Board::attack(Coord coord) {
         std::cout << "Error: Invalid coordinates" << std::endl;
         return false;
     };
-    Cell& board_cell = this->getCell(coord);
-    if (board_cell.segment) {
-        if (board_cell.segment->health == SegmentStatus::kWhole) {
-            board_cell.segment->health = SegmentStatus::kDamaged;
-        }
-        else if (board_cell.segment->health == SegmentStatus::kDamaged) {
-            board_cell.segment->health = SegmentStatus::kDestroyed;
-        }
-    };
-    board_cell.status = CellStatus::kRevealed;
+    Cell &board_cell = this->getCell(coord);
+    if (board_cell.isSegmentAt()) board_cell.segment->handleDamage();
+    board_cell.changeStatus();
     return true;
 };
 
@@ -116,7 +114,7 @@ bool Board::setShip(Ship &ship, Coord coord) {
             if (!this->checkCoordAround(Coord{coord.x + i, coord.y})) return false;
             if (this->isShipAtBoard(Coord{coord.x + i, coord.y})) return false;
         };
-        for (int i = 0; i < ship.getSize(); ++i) this->field_[coord.y][coord.x + i].segment = ship.getSegment(i);
+        for (int i = 0; i < ship.getSize(); ++i) this->field_.at(coord.y).at(coord.x + i).segment = ship.getSegment(i);
         return true;
     }
     if (!this->checkCoord(Coord{coord.x, coord.y + ship.getSize()})) {
@@ -127,14 +125,14 @@ bool Board::setShip(Ship &ship, Coord coord) {
         if (!this->checkCoordAround(Coord{coord.x, coord.y + i})) return false;
         if (this->isShipAtBoard(Coord{coord.x, coord.y + i})) return false;
     };
-    for (int i = 0; i < ship.getSize(); i++) this->field_[coord.y + i][coord.x].segment = ship.getSegment(i);
+    for (int i = 0; i < ship.getSize(); i++) this->field_.at(coord.y + i).at(coord.x).segment = ship.getSegment(i);
     return true;
 }
 
 void Board::printBoard() {
     for (int j = 0; j < this->size_y_; ++j) {
         for (int i = 0; i < this->size_x_; ++i) {
-            if (this->getCell(Coord{i, j}).segment) std::cout << "S" << "  ";
+            if (this->getCell(Coord{i, j}).isSegmentAt()) std::cout << "S" << "  ";
             else std::cout << "~" << "  ";
         };
         std::cout << std::endl;
@@ -144,13 +142,14 @@ void Board::printBoard() {
 void Board::printBoardStatus() {
     for (int j = 0; j < this->size_y_; ++j) {
         for (int i = 0; i < this->size_x_; ++i) {
-            Cell &cell = this->getCell(Coord{i, j});
-            if (cell.status == CellStatus::kHidden) std::cout << "~" << "  ";
-            else if (cell.status == CellStatus::kRevealed) {
-                if (!cell.segment) std::cout << "*" << "  ";
+            Cell &board_cell = this->getCell(Coord{i, j});
+            if (board_cell.status == Cell::CellVisibilityStatus::kHidden) std::cout << "~" << "  ";
+            else if (board_cell.status == Cell::CellVisibilityStatus::kRevealed) {
+                if (!board_cell.isSegmentAt()) std::cout << "*" << "  ";
                 else {
-                    if (cell.segment->health == SegmentStatus::kWhole) std::cout << "S" << "  ";
-                    else if (cell.segment->health == SegmentStatus::kDamaged) std::cout << "D" << "  ";
+                    if (board_cell.segment->health == Ship::Segment::SegmentStatus::kWhole) std::cout << "S" << "  ";
+                    else if (board_cell.segment->health == Ship::Segment::SegmentStatus::kDamaged)
+                        std::cout << "D" << "  ";
                     else std::cout << "X" << "  ";
                 }
             };
@@ -158,7 +157,6 @@ void Board::printBoardStatus() {
         std::cout << std::endl;
     };
 };
-
 
 
 Board::~Board() = default;

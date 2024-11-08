@@ -1,0 +1,9 @@
+#ifndef SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
+#define SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
+
+// class AttackOutsideException: public std::exception {
+//   public:
+//
+// }
+
+#endif //SEABATTLE_INCLUDE_EXCEPTIONS_ATTACKS_EXCEPTIONS_HPP
