@@ -8,8 +8,8 @@
   * @copyright Copyright (c) 2024
   *
   */
- #ifndef SEABATTLE_SHIP_MANAGER_HPP
- #define SEABATTLE_SHIP_MANAGER_HPP
+ #ifndef SEABATTLE_SHIPS_SHIPMANAGER_HPP
+ #define SEABATTLE_SHIPS_SHIPMANAGER_HPP
 
  #include <vector>
 
@@ -77,4 +77,4 @@
      std::vector<Ship> ships_;
  };
 
- #endif // SEABATTLE_SHIP_MANAGER_HPP
+ #endif // SEABATTLE_SHIPS_SHIPMANAGER_HPP

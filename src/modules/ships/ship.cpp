@@ -21,7 +21,7 @@ Ship::Ship(int size): size_(size), orientation_(Orientation::kHorizontal) {
 };
 
 Segment &Ship::operator[](int index) {
-    return this->segments_[index];
+    return this->segments_.at(index);
 };
 
 bool Ship::isHorizontal() const {
@@ -46,7 +46,7 @@ int Ship::getSize() const {
 };
 
 Segment *Ship::getSegment(int index) {
-    return &(this->segments_[index]);
+    return &this->segments_.at(index);
 };
 
 void Ship::info() {

@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_SHIP_HPP
-#define SEABATTLE_SHIP_HPP
+#ifndef SEABATTLE_SHIPS_SHIP_HPP
+#define SEABATTLE_SHIPS_SHIP_HPP
 
 #include <vector>
 #include <iostream>
@@ -25,13 +25,7 @@ public:
      * @param size
      * @param orientation
      */
-    explicit Ship(int size, Orientation orientation);
-    /**
-     * @brief Constructor of new Ship object
-     *
-     * @param size
-     */
-    explicit Ship(int size);
+    explicit Ship(int size, Orientation orientation = Orientation::kHorizontal);
     /**
     * @brief Overloading operator [] to get reference of SHip's segment
     *
@@ -117,4 +111,4 @@ private:
     std::vector<Segment> segments_;
 };
 
-#endif // SEABATTLE_SHIP_HPP
+#endif // SEABATTLE_SHIPS_SHIP_HPP
