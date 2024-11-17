@@ -1086,23 +1086,14 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */Chuban_Project \
-                            LICENSE\
+EXCLUDE_PATTERNS       =    LICENSE\
                             .gitignore \
                             tests \
-                            build \
-                            cmake-build-debug \
-                            cmake-build-release \
                             labs \
                             .vscode \
                             .idea \
-                            docs.sh \
-                            build.sh \
-                            clear_build.sh \
-                            clear_docs.sh \
                             _deps \
                             bin \
-                            .cmake
 
 
                             

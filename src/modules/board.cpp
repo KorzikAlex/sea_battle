@@ -13,7 +13,6 @@
 #include <iostream>
 
 #include "board.hpp"
-#include "ships/ship.hpp"
 
 void Board::Cell::changeStatus() {
     if (this->status == CellVisibilityStatus::kHidden) this->status = CellVisibilityStatus::kRevealed;

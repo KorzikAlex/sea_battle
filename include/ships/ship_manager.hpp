@@ -1,5 +1,5 @@
 /**
-  * @file shipmanager.hpp
+  * @file ship_manager.hpp
   * @author KorzikAlex (alek.korshkov@yandex.ru)
   * @brief ShipManager module
   * @version 0.1
@@ -15,66 +15,88 @@
 
 #include "ship.hpp"
 
+/**
+ * @brief Manages a collection of Ship objects
+ */
 class ShipManager {
 public:
     /**
-     * @brief Construct a new Ship Manager object
+     * @brief Constructs a ShipManager with a given list of ship sizes
      *
-     * @param sizes
+     * @param sizes a vector of integers representing the sizes of the ships to be managed
      */
     explicit ShipManager(std::vector<int> sizes);
 
     /**
-     * @brief Overloading [] operator to get Ship reference
+     * @brief Accesses a ship at the specified index.
      *
-     * @param index
-     * @return Ship&
+     * This operator provides access to the Ship object at the given index within
+     * the ShipManager.
+     *
+     * @param index The index of the ship to access.
+     * @return A reference to the Ship object at the specified index.
      */
     Ship &operator[](int index);
 
     /**
-     * @brief Get the reference of Ship object
+     * @brief Retrieves a ship by its index.
      *
-     * @param index
-     * @return Ship&
+     * This method returns a reference to the Ship object stored at the specified index
+     * within the ShipManager's collection.
+     *
+     * @param index The index of the ship to retrieve.
+     * @return A reference to the Ship at the specified index.
      */
     Ship &getShip(int index);
 
     /**
-     * @brief Get the Ship count in Ship Manager
+     * @brief Retrieves the number of ships managed by the ShipManager.
      *
-     * @return int
+     * This method returns the count of Ship objects currently stored in the ShipManager.
+     *
+     * @return The number of Ship objects managed by the ShipManager.
      */
     int getShipCount() const;
 
     /**
-     * @brief Create and add new Ship object to Ship Manager
+     * @brief Adds a Ship to the ShipManager
      *
-     * @param size
+     * This method adds a Ship object with the specified size to the
+     * ShipManager's collection of ships.
+     *
+     * @param size The size of the Ship to be added.
      */
     void addShip(int size);
 
     /**
-     * @brief Add Ship object to Ship Manager
+     * @brief Adds a Ship to the ShipManager's collection
      *
-     * @param ship
+     * @param ship The Ship object to be added to the collection
      */
     void addShip(Ship ship);
 
     /**
-     * @brief Delete Ship object to Ship Manager
+     * @brief Erases the Ship at the specified index from the collection.
      *
-     * @param index
+     * This method removes a Ship object located at the provided index
+     * within the ShipManager's collection.
+     *
+     * @param index The index of the Ship to be erased.
      */
     void eraseShip(int index);
 
     /**
-     * @brief Destructor of Ship Manager object
+     * @brief Destructor for the ShipManager class
      *
+     * This destructor cleans up resources allocated by the ShipManager class
+     * and ensures that all managed Ship objects are correctly deallocated.
      */
     ~ShipManager();
 
 private:
+    /**
+     * @brief A vector storing Ship objects managed by ShipManager.
+     */
     std::vector<Ship> ships_;
 };
 

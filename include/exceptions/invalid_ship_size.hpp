@@ -4,7 +4,7 @@
 #include <exception>
 #include <string>
 
-class InvalidShipSizeException : public std::exception {
+class InvalidShipSizeException: public std::exception {
 public:
     explicit InvalidShipSizeException (const std::string& message);
     const char* what() const noexcept override;

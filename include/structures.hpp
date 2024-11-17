@@ -12,8 +12,7 @@
 #define SEABATTLE_INCLUDE_STRUCTURES_HPP
 
 /**
- * @brief Struct of coordinates
- *
+ * @brief A simple structure representing a coordinate on a 2D plane.
  */
 struct Coord {
     int x;

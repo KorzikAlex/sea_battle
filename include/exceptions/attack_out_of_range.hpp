@@ -1,9 +1,15 @@
 #ifndef SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
 #define SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
 
-// class AttackOutsideException: public std::exception {
-//   public:
-//
-// }
+#include <exception>
+#include <string>
+
+class AttackOutOfRangeException: public std::exception {
+public:
+    explicit AttackOutOfRangeException (const std::string& message);
+    const char* what() const noexcept override;
+private:
+    std::string message_;
+};
 
 #endif //SEABATTLE_INCLUDE_EXCEPTIONS_ATTACKS_EXCEPTIONS_HPP

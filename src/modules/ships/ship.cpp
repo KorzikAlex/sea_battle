@@ -19,7 +19,6 @@ void Ship::Segment::handleDamage() {
 }
 
 Ship::Ship(int size, Orientation orientation): size_(size), orientation_(orientation) {
-    if (this->size_ < 1 || this->size_ > 4) throw std::invalid_argument("Size of ship must be between 1 and 4");
     this->segments_ = std::vector<Segment>(this->size_);
 };
 
