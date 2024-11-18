@@ -48,6 +48,8 @@ public:
      * @return A reference to the Ship at the specified index.
      */
     Ship &getShip(int index);
+    // TODO: добавить описание
+    Ship &getShip(Ship::Segment* segment);
 
     /**
      * @brief Retrieves the number of ships managed by the ShipManager.
@@ -66,14 +68,7 @@ public:
      *
      * @param size The size of the Ship to be added.
      */
-    void addShip(int size);
-
-    /**
-     * @brief Adds a Ship to the ShipManager's collection
-     *
-     * @param ship The Ship object to be added to the collection
-     */
-    void addShip(Ship ship);
+    void addShip(int size, Ship::Orientation orientation = Ship::Orientation::kHorizontal);
 
     /**
      * @brief Erases the Ship at the specified index from the collection.
@@ -84,6 +79,12 @@ public:
      * @param index The index of the Ship to be erased.
      */
     void eraseShip(int index);
+    // TODO: добавить описание eraseAllShips
+    void eraseAllShips();
+
+    // TODO: добавить описание changeShipOrientation
+    void changeShipOrientation(int index, Ship::Orientation new_orientation);
+    void checkShips();
 
     /**
      * @brief Destructor for the ShipManager class
@@ -98,6 +99,7 @@ private:
      * @brief A vector storing Ship objects managed by ShipManager.
      */
     std::vector<Ship> ships_;
+    int n_destroyed_ships_ = 0;
 };
 
 #endif // SEABATTLE_SHIPS_SHIP_MANAGER_HPP

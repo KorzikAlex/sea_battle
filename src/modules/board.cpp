@@ -14,16 +14,20 @@
 
 #include "board.hpp"
 
+#include <exceptions/attack_out_of_range.hpp>
+#include <exceptions/incorrect_ship_position.hpp>
+
 void Board::Cell::changeStatus() {
+    // change status of visibility
     if (this->status == CellVisibilityStatus::kHidden) this->status = CellVisibilityStatus::kRevealed;
 }
 
 bool Board::Cell::isSegmentAt() const {
-    return this->segment != nullptr;
+    return this->segment != nullptr; // return true if cell don't have segment of ship else false
 }
 
-Board::Board(int size_x = 10, int size_y = 10) : size_x_(size_x), size_y_(size_y),
-                                                 field_(this->size_y_, std::vector<Cell>(this->size_x_)) {
+Board::Board(int size_x = 10, int size_y = 10): size_x_(size_x), size_y_(size_y),
+                                                field_(this->size_y_, std::vector<Cell>(this->size_x_)) {
 };
 
 Board::Board(const Board &other): size_x_(other.size_x_), size_y_(other.size_y_), field_(other.field_) {
@@ -57,14 +61,15 @@ Board &Board::operator=(Board &&other) noexcept {
 };
 
 int Board::getSizeX() const {
-    return this->size_x_;
+    return this->size_x_; // get size_x of board
 };
 
 int Board::getSizeY() const {
-    return this->size_y_;
+    return this->size_y_; // get size_y of board
 };
 
 bool Board::checkCoord(Coord coord) const {
+    // check if coord on board
     return coord.x >= 0 && coord.x < this->getSizeX() && coord.y >= 0 && coord.y < this->getSizeY();
 };
 
@@ -88,36 +93,36 @@ Board::Cell &Board::getCell(Coord coord) {
     throw std::out_of_range("Coordinate out of range");
 };
 
-bool Board::attack(Coord coord) {
+void Board::attack(Coord coord) {
     if (!this->checkCoord(coord)) {
-        std::cout << "Error: Invalid coordinates" << std::endl;
-        return false;
+        throw AttackOutOfRangeException("Coordinate out of range");
     };
     Cell &board_cell = this->getCell(coord);
     if (board_cell.isSegmentAt()) board_cell.segment->handleDamage();
     board_cell.changeStatus();
-    return true;
 };
 
 bool Board::setShip(Ship &ship, Coord coord) {
     if (!this->checkCoord(coord)) {
-        std::cout << "Error: Invalid coordinates" << std::endl;
+        std::cerr << "Error: Invalid coordinates" << std::endl;
         return false;
     };
     if (ship.isHorizontal()) {
         if (!this->checkCoord(Coord{coord.x + ship.getSize(), coord.y})) {
-            std::cout << "Error: Invalid coordinates" << std::endl;
+            std::cerr << "Error: Invalid coordinates" << std::endl;
             return false;
         };
         for (int i = 0; i < ship.getSize(); ++i) {
-            if (!this->checkCoordAround(Coord{coord.x + i, coord.y})) return false;
-            if (this->isShipAtBoard(Coord{coord.x + i, coord.y})) return false;
+            if (!this->checkCoordAround(Coord{coord.x + i, coord.y}))
+                throw IncorrectShipPositionException("Incorrect ship placement!");
+            if (this->isShipAtBoard(Coord{coord.x + i, coord.y}))
+                throw IncorrectShipPositionException("Incorrect ship placement!");;
         };
         for (int i = 0; i < ship.getSize(); ++i) this->field_.at(coord.y).at(coord.x + i).segment = ship.getSegment(i);
         return true;
     }
     if (!this->checkCoord(Coord{coord.x, coord.y + ship.getSize()})) {
-        std::cout << "Error: Invalid coordinates" << std::endl;
+        std::cerr << "Error: Invalid coordinates" << std::endl;
         return false;
     }
     for (int i = 0; i < ship.getSize(); ++i) {

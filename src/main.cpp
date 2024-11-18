@@ -9,6 +9,7 @@
  * 
  */
 #include <iostream>
+
 #include "game.hpp"
 
 /**
@@ -22,9 +23,9 @@
  * @return int Returns EXIT_SUCCESS if the game initializes successfully, otherwise EXIT_FAILURE.
  */
 int main(int argc, char **argv) {
-    if (const Game game(argc, argv); game.initGame()) {
-        std::cerr << "Ошибка инициализации игры." << std::endl;
-        return EXIT_FAILURE;
+    if (const Game game(argc, argv); !game.initGame()) { // create object of game and start it
+        std::cerr << "Ошибка инициализации игры." << std::endl; // initGame return false
+        return EXIT_FAILURE; // return 1
     }
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS; //return 0
 };

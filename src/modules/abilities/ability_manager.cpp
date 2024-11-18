@@ -1,24 +1,35 @@
+/**
+ * @file ability_manager.cpp
+ * @author KorzikAlex (alek.korshkov@yandex.ru)
+ * @brief 
+ * @version 0.1
+ * @date 2024-11-18
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include <algorithm>
 #include <random>
 #include <array>
-#include <iostream>
 
 #include "abilities/ability_manager.hpp"
+
+#include "exceptions/no_available_abilities.hpp"
 
 AbilityManager::AbilityManager(Board &board): board_(board) {
     std::array<Abilities, 3> abilities = {Abilities::DoubleAttack, Abilities::Scanner, Abilities::RandomAttack};
     std::random_device rd;
     std::mt19937 gen(rd());
     std::shuffle(abilities.begin(), abilities.end(), gen);
-    abilities_.emplace(abilities[0]);
+    this->abilities_.emplace(abilities[0]);
 }
 
 int AbilityManager::getAbilityCount() const {
     return this->abilities_.size();
 }
 
-bool AbilityManager::isEmpty() const {
-    return this->abilities_.empty();
+void AbilityManager::isEmpty() const {
+    if (this->abilities_.empty()) throw NoAvailableAbilitiesException("You don't have abilities!");
 }
 
 void AbilityManager::addAbility(Abilities ability) {
@@ -31,7 +42,6 @@ void AbilityManager::popAbility() {
 
 void AbilityManager::useAbility(Coord coord) {
     Abilities ability = this->abilities_.front();
-    // TODO: применить способности корректно
     if (coord.x == -1 && coord.y == -1 && ability == Abilities::RandomAttack)
         RandomAttack(this->board_).realizeAbility();
     else if (ability == Abilities::DoubleAttack)

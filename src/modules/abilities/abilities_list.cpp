@@ -1,3 +1,13 @@
+/**
+ * @file abilities_list.cpp
+ * @author KorzikAlex (alek.korshkov@yandex.ru)
+ * @brief 
+ * @version 0.1
+ * @date 2024-11-18
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include <iostream>
 #include <random>
 
@@ -40,8 +50,11 @@ void RandomAttack::realizeAbility() {
         Coord rd_coord = {disX(gen), disY(gen)};
         Board::Cell &board_cell = this->board_.getCell(rd_coord);
         if (board_cell.isSegmentAt()) {
-            board_cell.segment->handleDamage();
-            std::cout << "Нанесён урон по сегменту в позиции: " << rd_coord.x << " " << rd_coord.y << std::endl;
+            if (board_cell.segment->health != Ship::Segment::SegmentStatus::kDestroyed) {
+                board_cell.segment->handleDamage();
+                std::cout << "Нанесён урон по сегменту в позиции: " << rd_coord.x << " " << rd_coord.y << std::endl;
+            }
+            else continue;
             break;
         }
     }

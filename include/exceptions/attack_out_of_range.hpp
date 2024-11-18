@@ -1,3 +1,13 @@
+/**
+ * @file attack_out_of_range.hpp
+ * @author KorzikAlex (alek.korshkov@yandex.ru)
+ * @brief 
+ * @version 0.1
+ * @date 2024-11-18
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
 #define SEABATTLE_INCLUDE_EXCEPTIONS_ATTACK_OUT_OF_RANGE_HPP
 

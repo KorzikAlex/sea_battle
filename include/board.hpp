@@ -184,9 +184,8 @@ public:
      * @brief Attacks the cell located at the given coordinates.
      *
      * @param coord The coordinates of the cell to attack.
-     * @return True if the attack was successful; false otherwise.
      */
-    bool attack(Coord coord);
+    void attack(Coord coord);
 
     /**
      * @brief Prints the current state of the game board to the standard output
@@ -216,8 +215,17 @@ public:
     ~Board();
 
 private:
+    /**
+    * @brief Represents the horizontal size of the game board.
+    */
     int size_x_;
+    /**
+     * @brief Height dimension of the board in units
+     */
     int size_y_;
+    /**
+     * @brief 2D vector representing a grid of cells
+     */
     std::vector<std::vector<Cell> > field_;
 };
 

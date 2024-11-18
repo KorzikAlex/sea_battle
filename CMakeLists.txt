@@ -62,20 +62,20 @@ add_executable(${main} ${src}/main.cpp)
 target_compile_features(${main} PRIVATE cxx_std_17)
 target_link_libraries(${main} PRIVATE sea_battle_lib sfml-graphics)
 
-find_package(Doxygen)
-if (DOXYGEN_FOUND)
-    set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR})
-    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs)
-    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-    add_custom_target(doxygen ALL
-            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "Generating documentation with Doxygen"
-            VERBATIM
-    )
-else (DOXYGEN_FOUND)
-    MESSAGE(STATUS "WARNING: Doxygen not found - Reference manual will not be created")
-endif (DOXYGEN_FOUND)
+#find_package(Doxygen)
+#if (DOXYGEN_FOUND)
+#    set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR})
+#    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs)
+#    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+#    add_custom_target(doxygen ALL
+#            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+#            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#            COMMENT "Generating documentation with Doxygen"
+#            VERBATIM
+#    )
+#else (DOXYGEN_FOUND)
+#    MESSAGE(STATUS "WARNING: Doxygen not found - Reference manual will not be created")
+#endif (DOXYGEN_FOUND)
 
 if (WIN32)
     add_custom_command(

@@ -62,9 +62,8 @@ public:
      * This method determines whether there are any abilities currently managed
      * by the AbilityManager by checking if the internal ability queue is empty.
      *
-     * @return True if the ability queue is empty, otherwise false.
      */
-    bool isEmpty() const;
+    void isEmpty() const;
 
     /**
      * @brief Assigns a random ability to the ability queue.
