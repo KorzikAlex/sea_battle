@@ -21,7 +21,7 @@ AbilityManager::AbilityManager(Board &board): board_(board) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::shuffle(abilities.begin(), abilities.end(), gen);
-    this->abilities_.emplace(abilities[0]);
+    this->abilities_.push(abilities[0]);
 }
 
 int AbilityManager::getAbilityCount() const {
@@ -78,12 +78,12 @@ std::string AbilityManager::returnAbilityName() const {
         return "Scanner";
     if (this->abilities_.front() == Abilities::DoubleAttack)
         return "DoubleAttack";
-    else if (this->abilities_.front() == Abilities::RandomAttack)
+    if (this->abilities_.front() == Abilities::RandomAttack)
         return "RandomAttack";
-    return "WTF";
+    throw "Can't return Ability Name";
 }
 
-AbilityManager::Abilities AbilityManager::returnAbility() const {
+AbilityManager::Abilities AbilityManager::  returnAbility() const {
     return this->abilities_.front();
 }
 

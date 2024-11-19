@@ -13,6 +13,8 @@
 
 #include "abilities/abilities_list.hpp"
 
+#include "exceptions/out_of_range.hpp"
+
 DoubleAttack::DoubleAttack(Board &field, Coord coord): board_(field), coord_(coord) {};
 
 Scanner::Scanner(Board &field, Coord coord): board_(field), coord_(coord) {};
@@ -27,7 +29,7 @@ void Scanner::realizeAbility() {
     for (int j = 0; j <= 1; ++j) {
         for (int i = 0; i <= 1; ++i) {
             if (!board_.checkCoord({this->coord_.x + i, this->coord_.y + j}))
-                throw std::invalid_argument("Coordinates");
+                throw OutOfRangeException("Coordinate out of range");
             Board::Cell &board_cell = this->board_.getCell({this->coord_.x + i, this->coord_.y + j});
             if (board_cell.isSegmentAt()) {
                 std::cout << "Корабль найден на позиции: " << this->coord_.x + i << " " << this->coord_.y + j << std::endl;
@@ -59,3 +61,5 @@ void RandomAttack::realizeAbility() {
         }
     }
 };
+
+Ability::~Ability() = default;

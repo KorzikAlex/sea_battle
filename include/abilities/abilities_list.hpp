@@ -44,7 +44,7 @@ public:
      *
      * Ensures that derived class destructors are called when an Ability object is destroyed.
      */
-    virtual ~Ability() = default;
+    virtual ~Ability();
 };
 
 /**

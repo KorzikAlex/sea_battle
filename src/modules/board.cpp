@@ -14,7 +14,7 @@
 
 #include "board.hpp"
 
-#include <exceptions/attack_out_of_range.hpp>
+#include <exceptions/out_of_range.hpp>
 #include <exceptions/incorrect_ship_position.hpp>
 
 void Board::Cell::changeStatus() {
@@ -95,7 +95,7 @@ Board::Cell &Board::getCell(Coord coord) {
 
 void Board::attack(Coord coord) {
     if (!this->checkCoord(coord)) {
-        throw AttackOutOfRangeException("Coordinate out of range");
+        throw OutOfRangeException("Coordinate out of range");
     };
     Cell &board_cell = this->getCell(coord);
     if (board_cell.isSegmentAt()) board_cell.segment->handleDamage();

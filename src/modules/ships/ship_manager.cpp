@@ -12,6 +12,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <exceptions/out_of_range.hpp>
 
 ShipManager::ShipManager(std::vector<int> sizes): ships_(sizes.begin(), sizes.end()) {
 };
@@ -33,7 +34,7 @@ Ship &ShipManager::getShip(Ship::Segment *segment) {
     for (int i = 0; i < this->ships_.size(); ++i)
         for (int j = 0; j < this->ships_.at(i).getSize(); ++j)
             if (this->ships_.at(i).getSegment(j) == segment) return this->ships_.at(i);
-    throw std::out_of_range("Ship does not exist");
+    throw OutOfRangeException("Ship does not exist");
 }
 
 
