@@ -22,7 +22,7 @@ Scanner::Scanner(Board &field, Coord coord): board_(field), coord_(coord) {};
 RandomAttack::RandomAttack(Board &field): board_(field) {};
 
 void DoubleAttack::realizeAbility() {
-    for (int i = 0; i < 2; ++i) this->board_.attack(this->coord_);
+    this->board_.attack(this->coord_, 2);
 };
 
 void Scanner::realizeAbility() {

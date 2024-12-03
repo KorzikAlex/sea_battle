@@ -93,12 +93,10 @@ Board::Cell &Board::getCell(Coord coord) {
     throw std::out_of_range("Coordinate out of range");
 };
 
-void Board::attack(Coord coord) {
-    if (!this->checkCoord(coord)) {
-        throw OutOfRangeException("Coordinate out of range");
-    };
+void Board::attack(Coord coord, int power) {
+    if (!this->checkCoord(coord)) throw OutOfRangeException("Coordinate out of range");
     Cell &board_cell = this->getCell(coord);
-    if (board_cell.isSegmentAt()) board_cell.segment->handleDamage();
+    if (board_cell.isSegmentAt()) board_cell.segment->handleDamage(power);
     board_cell.changeStatus();
 };
 

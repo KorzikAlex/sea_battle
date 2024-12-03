@@ -61,7 +61,7 @@ public:
          * - If the segment is whole, it transitions to damaged.
          * - If the segment is damaged, it transitions to destroyed.
          */
-        void handleDamage();
+        void handleDamage(int power=1);
     };
 
     /**

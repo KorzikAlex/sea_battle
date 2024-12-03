@@ -185,8 +185,8 @@ public:
      *
      * @param coord The coordinates of the cell to attack.
      */
-    void attack(Coord coord);
-
+    void attack(Coord coord, int power = 1);
+    
     /**
      * @brief Prints the current state of the game board to the standard output
      *

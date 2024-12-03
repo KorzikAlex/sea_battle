@@ -13,9 +13,10 @@
 
 #include "ships/ship.hpp"
 
-void Ship::Segment::handleDamage() {
-    if (this->health == SegmentStatus::kWhole) this->health = SegmentStatus::kDamaged;
-    else if (this->health == SegmentStatus::kDamaged) this->health = SegmentStatus::kDestroyed;
+void Ship::Segment::handleDamage(int power) {
+    if (this->health == SegmentStatus::kWhole && power == 1) this->health = SegmentStatus::kDamaged;
+    else if (this->health == SegmentStatus::kDamaged || (this->health == SegmentStatus::kWhole && power >= 2))
+        this->health = SegmentStatus::kDestroyed;
 }
 
 Ship::Ship(int size, Orientation orientation): size_(size), orientation_(orientation) {
