@@ -13,6 +13,8 @@
 #include <vector>
 #include <iostream>
 
+#include "structures.hpp"
+
 /**
  * @brief Represents a ship in a game.
  *
@@ -62,6 +64,8 @@ public:
          * - If the segment is damaged, it transitions to destroyed.
          */
         void handleDamage(int power = 1);
+
+        Coord segment_coord;
     };
 
     /**

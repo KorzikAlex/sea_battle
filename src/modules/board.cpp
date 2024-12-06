@@ -150,8 +150,14 @@ void Board::setShipRandomly(Ship &ship) {
 void Board::printBoard() {
     for (int j = 0; j < this->size_y_; ++j) {
         for (int i = 0; i < this->size_x_; ++i) {
-            if (this->getCell(Coord{i, j}).isSegmentAt()) std::cout << "S" << "  ";
-            else std::cout << "~" << "  ";
+            if (this->getCell(Coord{i, j}).isSegmentAt()) {
+                if (this->getCell(Coord{i, j}).segment->health == Ship::Segment::SegmentStatus::kWhole)
+                    std::cout << "S" << "  ";
+                else if (this->getCell(Coord{i, j}).segment->health == Ship::Segment::SegmentStatus::kDamaged)
+                    std::cout << "D" << "  ";
+                else if (this->getCell(Coord{i, j}).segment->health == Ship::Segment::SegmentStatus::kDestroyed)
+                    std::cout << "X" << "  ";
+            } else std::cout << "~" << "  ";
         };
         std::cout << std::endl;
     }
@@ -165,10 +171,12 @@ void Board::printBoardStatus() {
             else if (board_cell.status == Cell::CellVisibilityStatus::kRevealed) {
                 if (!board_cell.isSegmentAt()) std::cout << "*" << "  ";
                 else {
-                    if (board_cell.segment->health == Ship::Segment::SegmentStatus::kWhole) std::cout << "S" << "  ";
+                    if (board_cell.segment->health == Ship::Segment::SegmentStatus::kWhole)
+                        std::cout << "S" << "  ";
                     else if (board_cell.segment->health == Ship::Segment::SegmentStatus::kDamaged)
                         std::cout << "D" << "  ";
-                    else std::cout << "X" << "  ";
+                    else if (board_cell.segment->health == Ship::Segment::SegmentStatus::kDestroyed)
+                        std::cout << "X" << "  ";
                 }
             };
         };

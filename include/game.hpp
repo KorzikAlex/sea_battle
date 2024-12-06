@@ -29,7 +29,18 @@ public:
      *
      */
     explicit Game(PlayerUnit player, BotUnit bot, GameState game_state);
+
     void startGame() const;
+
+    void doPlayerMove();
+
+    void doBotMove();
+
+    void loadGame(const std::string &file_name);
+
+    void saveGame(const std::string &file_name);
+
+    void resetGame();
 private:
     PlayerUnit player_;
     BotUnit bot_;

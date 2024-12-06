@@ -52,13 +52,20 @@ int main(int argc, char **argv) {
 
     for (size_t i = 0; i < default_ship_sizes.size(); ++i) bot_board.setShipRandomly(bot_ship_manager[i]);
     // TODO: сделать возможность расстановки кораблей
+    for (size_t i = 0; i < default_ship_sizes.size(); ++i) player_board.setShipRandomly(bot_ship_manager[i]);
     AbilityManager player_ability_manager(player_board);
 
     PlayerUnit player(bot_ship_manager, bot_board, player_ability_manager);
     BotUnit bot(player_ship_manager, player_board);
+
+    std::cout << "Player board" << std::endl;
+    player.getBoard().printBoard();
+    std::cout << "Bot board" << std::endl;
+    bot.getBoard().printBoard();
+
     GameState game_state(player, bot);
     Game game = Game(player, bot, game_state);
     game.startGame();
 
-    return EXIT_SUCCESS; //return 0
+    return EXIT_SUCCESS;
 };

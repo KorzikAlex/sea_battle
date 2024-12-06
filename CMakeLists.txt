@@ -11,7 +11,12 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 set(src src)
-set(main sea_battle.out)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(main "sea_battle.exe")
+else()
+    set(main "sea_battle.out")
+endif()
 
 file(GLOB_RECURSE SOURCES_
         ${src}/*.cpp
