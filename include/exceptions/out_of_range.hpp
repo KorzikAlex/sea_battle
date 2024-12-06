@@ -8,8 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_INCLUDE_EXCEPTIONS_OUT_OF_RANGE_HPP
-#define SEABATTLE_INCLUDE_EXCEPTIONS_OUT_OF_RANGE_HPP
+# pragma once
 
 #include <exception>
 #include <string>
@@ -21,5 +20,3 @@ public:
 private:
     std::string message_;
 };
-
-#endif // SEABATTLE_INCLUDE_EXCEPTIONS_OUT_OF_RANGE_HPP

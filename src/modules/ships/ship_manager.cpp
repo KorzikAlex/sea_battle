@@ -10,10 +10,6 @@
  */
 #include "ships/ship_manager.hpp"
 
-#include <stdexcept>
-#include <string>
-#include <exceptions/out_of_range.hpp>
-
 ShipManager::ShipManager(std::vector<int> sizes): ships_(sizes.begin(), sizes.end()) {
 };
 

@@ -9,7 +9,14 @@
  * 
  */
 #include <iostream>
+#include "cli_parser.hpp"
 
+#include "board.hpp"
+#include "ships/ship_manager.hpp"
+#include "abilities/ability_manager.hpp"
+#include "units.hpp"
+
+#include "exceptions/invalid_ship_size.hpp"
 #include "game.hpp"
 
 /**
@@ -23,9 +30,35 @@
  * @return int Returns EXIT_SUCCESS if the game initializes successfully, otherwise EXIT_FAILURE.
  */
 int main(int argc, char **argv) {
-    if (const Game game(argc, argv); !game.initGame()) { // create object of game and start it
-        std::cerr << "Ошибка инициализации игры." << std::endl; // initGame return false
-        return EXIT_FAILURE; // return 1
+    CLIParser cli_parser(argc, argv);
+    const int kSizeX = cli_parser.getSizeX();
+    const int kSizeY = cli_parser.getSizeY();
+
+    Board player_board(kSizeX, kSizeY);
+    Board bot_board(kSizeX, kSizeY);
+
+    const std::vector<int> default_ship_sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    try {
+        for (auto &size: default_ship_sizes)
+            if (size < 1 || size > 4)
+                throw InvalidShipSizeException("Invalid ship size. It must be between 1 and 4.");
+    } catch (const InvalidShipSizeException &e) {
+        std::cout << e.what() << std::endl;
+        return EXIT_FAILURE;
     }
+
+    ShipManager player_ship_manager(default_ship_sizes);
+    ShipManager bot_ship_manager(default_ship_sizes);
+
+    for (size_t i = 0; i < default_ship_sizes.size(); ++i) bot_board.setShipRandomly(bot_ship_manager[i]);
+    // TODO: сделать возможность расстановки кораблей
+    AbilityManager player_ability_manager(player_board);
+
+    PlayerUnit player(bot_ship_manager, bot_board, player_ability_manager);
+    BotUnit bot(player_ship_manager, player_board);
+    GameState game_state(player, bot);
+    Game game = Game(player, bot, game_state);
+    game.startGame();
+
     return EXIT_SUCCESS; //return 0
 };

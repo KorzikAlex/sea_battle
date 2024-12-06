@@ -8,12 +8,15 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_INCLUDE_ABILITIES_ABILITIES_LIST_HPP
-#define SEABATTLE_INCLUDE_ABILITIES_ABILITIES_LIST_HPP
+#pragma once
+
+#include <iostream>
+#include <random>
 
 #include "structures.hpp"
 #include "board.hpp"
 
+#include "exceptions/out_of_range.hpp"
 /**
  * @class Ability
  * @brief Abstract base class representing a generic ability.
@@ -234,4 +237,3 @@ private:
     */
     Board &board_;
 };
-#endif //SEABATTLE_ABILITIES_INCLUDE_ABILITIES_LIST_HPP

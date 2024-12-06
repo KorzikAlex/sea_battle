@@ -8,12 +8,15 @@
   * @copyright Copyright (c) 2024
   *
   */
-#ifndef SEABATTLE_INCLUDE_SHIPS_SHIP_MANAGER_HPP
-#define SEABATTLE_INCLUDE_SHIPS_SHIP_MANAGER_HPP
+#pragma once
 
 #include <vector>
+#include <stdexcept>
+#include <string>
 
 #include "ship.hpp"
+
+#include "exceptions/out_of_range.hpp"
 
 /**
  * @brief Manages a collection of Ship objects
@@ -48,8 +51,9 @@ public:
      * @return A reference to the Ship at the specified index.
      */
     Ship &getShip(int index);
+
     // TODO: добавить описание
-    Ship &getShip(Ship::Segment* segment);
+    Ship &getShip(Ship::Segment *segment);
 
     /**
      * @brief Retrieves the number of ships managed by the ShipManager.
@@ -79,11 +83,13 @@ public:
      * @param index The index of the Ship to be erased.
      */
     void eraseShip(int index);
+
     // TODO: добавить описание eraseAllShips
     void eraseAllShips();
 
     // TODO: добавить описание changeShipOrientation
     void changeShipOrientation(int index, Ship::Orientation new_orientation);
+
     void checkShips();
 
     /**
@@ -101,5 +107,3 @@ private:
     std::vector<Ship> ships_;
     int n_destroyed_ships_ = 0;
 };
-
-#endif // SEABATTLE_SHIPS_SHIP_MANAGER_HPP

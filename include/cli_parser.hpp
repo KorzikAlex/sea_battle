@@ -8,9 +8,9 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_INCLUDE_CLI_PARSER_HPP
-#define SEABATTLE_INCLUDE_CLI_PARSER_HPP
+#pragma once
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 
@@ -70,5 +70,3 @@ private:
     int size_x;
     int size_y;
 };
-
-#endif // SEABATTLE_INCLUDE_CLI_PARSER_HPP

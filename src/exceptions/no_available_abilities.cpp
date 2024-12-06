@@ -14,5 +14,5 @@ NoAvailableAbilitiesException::NoAvailableAbilitiesException(const std::string &
 };
 
 const char *NoAvailableAbilitiesException::what() const noexcept {
-    return message_.c_str();
+    return this->message_.c_str();
 }

@@ -8,9 +8,6 @@
  * @copyright Copyright (c) 2024
  * 
  */
-
-#include <iostream>
-
 #include "ships/ship.hpp"
 
 void Ship::Segment::handleDamage(int power) {

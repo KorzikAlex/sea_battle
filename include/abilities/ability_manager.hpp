@@ -8,12 +8,16 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_INCLUDE_ABILITIES_ABILITY_MANAGER_HPP
-#define SEABATTLE_INCLUDE_ABILITIES_ABILITY_MANAGER_HPP
+#pragma once
 
 #include <queue>
+#include <algorithm>
+#include <random>
+#include <array>
 
 #include "abilities_list.hpp"
+
+#include "exceptions/no_available_abilities.hpp"
 
 
 /**
@@ -149,6 +153,3 @@ private:
      */
     void addAbility(Abilities ability);
 };
-
-
-#endif //SEABATTLE_INCLUDE_ABILITIES_ABILITY_MANAGER_HPP

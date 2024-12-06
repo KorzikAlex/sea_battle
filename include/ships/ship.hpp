@@ -8,10 +8,10 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#ifndef SEABATTLE_INCLUDE_SHIPS_SHIP_HPP
-#define SEABATTLE_INCLUDE_SHIPS_SHIP_HPP
+#pragma once
 
 #include <vector>
+#include <iostream>
 
 /**
  * @brief Represents a ship in a game.
@@ -61,7 +61,7 @@ public:
          * - If the segment is whole, it transitions to damaged.
          * - If the segment is damaged, it transitions to destroyed.
          */
-        void handleDamage(int power=1);
+        void handleDamage(int power = 1);
     };
 
     /**
@@ -201,5 +201,3 @@ private:
      */
     std::vector<Segment> segments_;
 };
-
-#endif // SEABATTLE_INCLUDE_SHIPS_SHIP_HPP

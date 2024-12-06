@@ -8,14 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-
-#include <stdexcept>
-#include <iostream>
-
 #include "board.hpp"
-
-#include <exceptions/out_of_range.hpp>
-#include <exceptions/incorrect_ship_position.hpp>
 
 void Board::Cell::changeStatus() {
     // change status of visibility
@@ -130,6 +123,29 @@ bool Board::setShip(Ship &ship, Coord coord) {
     for (int i = 0; i < ship.getSize(); i++) this->field_.at(coord.y + i).at(coord.x).segment = ship.getSegment(i);
     return true;
 }
+
+void Board::setShipRandomly(Ship &ship) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> disX(0, this->getSizeX() - 1);
+    std::uniform_int_distribution<> disY(0, this->getSizeY() - 1);
+    std::uniform_int_distribution<> disOrientation(0, 1);
+
+    int j = 0;
+    while (true) {
+        int randomX = disX(gen);
+        int randomY = disY(gen);
+        int randOrientation = disOrientation(gen);
+
+        if (randOrientation == 1) ship.setOrientation(Ship::Orientation::kVertical);
+        try {
+            this->setShip(ship, {randomX, randomY});
+            break;
+        } catch (IncorrectShipPositionException &e) {
+        }
+    }
+}
+
 
 void Board::printBoard() {
     for (int j = 0; j < this->size_y_; ++j) {

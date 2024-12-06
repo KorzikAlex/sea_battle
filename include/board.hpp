@@ -8,15 +8,18 @@
  * @copyright Copyright (c) 2024
  *
  */
-#ifndef SEABATTLE_INLCUDE_BOARD_HPP
-#define SEABATTLE_INCLUDE_BOARD_HPP
+#pragma once
 
 #include <vector>
+#include <stdexcept>
+#include <iostream>
+#include <random>
 
 #include "ships/ship.hpp"
 #include "structures.hpp"
 
-
+#include "exceptions/out_of_range.hpp"
+#include "exceptions/incorrect_ship_position.hpp"
 /**
  * @brief Class representing a game board
  */
@@ -180,6 +183,7 @@ public:
      */
     bool setShip(Ship &ship, Coord coord);
 
+    void setShipRandomly(Ship &ship);
     /**
      * @brief Attacks the cell located at the given coordinates.
      *
@@ -228,5 +232,3 @@ private:
      */
     std::vector<std::vector<Cell> > field_;
 };
-
-#endif // SEABATTLE_INLCUDE_BOARD_HPP

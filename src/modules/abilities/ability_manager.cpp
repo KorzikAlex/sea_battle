@@ -8,13 +8,8 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include <algorithm>
-#include <random>
-#include <array>
-
 #include "abilities/ability_manager.hpp"
 
-#include "exceptions/no_available_abilities.hpp"
 
 AbilityManager::AbilityManager(Board &board): board_(board) {
     std::array<Abilities, 3> abilities = {Abilities::DoubleAttack, Abilities::Scanner, Abilities::RandomAttack};
@@ -83,7 +78,7 @@ std::string AbilityManager::returnAbilityName() const {
     throw "Can't return Ability Name";
 }
 
-AbilityManager::Abilities AbilityManager::  returnAbility() const {
+AbilityManager::Abilities AbilityManager::returnAbility() const {
     return this->abilities_.front();
 }
 

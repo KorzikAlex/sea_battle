@@ -10,8 +10,6 @@
  */
 #include "cli_parser.hpp"
 
-#include <iostream>
-
 CLIParser::CLIParser(int argc, char **argv): size_x(10), size_y(10) {
     // getting flags and options
     for (int i = 1; i < argc; ++i) {
@@ -28,7 +26,8 @@ CLIParser::CLIParser(int argc, char **argv): size_x(10), size_y(10) {
             this->size_x = std::stoi(option.second); // set size_x of board from parser
         else if (option.first == "--size_y" && option.second != "")
             this->size_y = std::stoi(option.second); // set size_y of board from parser
-        if (option.first == "--help" || option.first == "-h") { // get help and exit the game
+        if (option.first == "--help" || option.first == "-h") {
+            // get help and exit the game
             std::cout << "Usage: " << argv[0] << " [options]" << std::endl;
             std::cout << "Options:" << std::endl;
             std::cout << "--size_x:" << " [<int> arg] " << "set width size of board" << std::endl;

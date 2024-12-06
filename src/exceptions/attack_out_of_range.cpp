@@ -13,6 +13,6 @@
 OutOfRangeException::OutOfRangeException(const std::string &message):message_(message) {};
 
 const char *OutOfRangeException::what() const noexcept {
-    return message_.c_str();
+    return this->message_.c_str();
 }
 

@@ -8,12 +8,8 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include <iostream>
-#include <random>
 
 #include "abilities/abilities_list.hpp"
-
-#include "exceptions/out_of_range.hpp"
 
 DoubleAttack::DoubleAttack(Board &field, Coord coord): board_(field), coord_(coord) {};
 
