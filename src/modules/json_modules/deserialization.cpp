@@ -52,8 +52,8 @@ void Deserialization::from_json(AbilityManager &abilityManager, std::string key)
     abilityManager.popAbility();
 
     for (const auto &jability: jam.at("abilities")) {
-        if (jability == "Double Damage") abilityManager.addAbility(new DoubleDamageAbilityCreator());
-        else if (jability == "Scanner") abilityManager.addAbility(new ScannerAbilityCreator());
-        else if (jability == "Gunblaze") abilityManager.addAbility(new GunblazeAbilityCreator());
+        if (jability == "DoubleAttack") abilityManager.addAbility(AbilityManager::Abilities::DoubleAttack);
+        else if (jability == "Scanner") abilityManager.addAbility(AbilityManager::Abilities::Scanner);
+        else if (jability == "RandomAttack") abilityManager.addAbility(AbilityManager::Abilities::RandomAttack);
     }
 }

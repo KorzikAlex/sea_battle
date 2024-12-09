@@ -83,4 +83,18 @@ void Ship::setOrientation(Orientation orientation) {
     this->orientation_ = orientation;
 };
 
+void Ship::setCoord(Coord coord) {
+    int i = 0;
+    for (Segment &segment: this->segments_) {
+        if (this->isHorizontal()) {
+            segment.segment_coord.x = coord.x + i;
+            segment.segment_coord.y = coord.y;
+        } else {
+            segment.segment_coord.x = coord.x;
+            segment.segment_coord.y = coord.y + i;
+        }
+        ++i;
+    }
+}
+
 Ship::~Ship() = default;

@@ -55,6 +55,8 @@ public:
     // TODO: добавить описание
     Ship &getShip(Ship::Segment *segment);
 
+    Ship &getShip(Coord coord);
+
     /**
      * @brief Retrieves the number of ships managed by the ShipManager.
      *
@@ -90,8 +92,9 @@ public:
     // TODO: добавить описание changeShipOrientation
     void changeShipOrientation(int index, Ship::Orientation new_orientation);
 
+    // TODO: добавить описание checkShips
     void checkShips();
-
+    int getShipsAlive() const;
     /**
      * @brief Destructor for the ShipManager class
      *
@@ -105,5 +108,5 @@ private:
      * @brief A vector storing Ship objects managed by ShipManager.
      */
     std::vector<Ship> ships_;
-    int n_destroyed_ships_ = 0;
+    int n_alive_ships_ = 0;
 };

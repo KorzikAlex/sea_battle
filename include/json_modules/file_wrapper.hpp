@@ -16,13 +16,13 @@ public:
 
     ~FileWrapper();
 
-    void read(nlohmann::json &j);
+    void read(nlohmann::json &json_file);
 
-    void write(nlohmann::json &j);
+    void write(nlohmann::json &json_file);
 
-    FileWrapper &operator>>(FileWrapper &file_wrapper, GameState &state);
-
-    FileWrapper &operator<<(FileWrapper &fileWrapper, GameState &state);
+    // FileWrapper &operator>>(GameState &state);
+    //
+    // FileWrapper &operator<<(GameState &state);
 
 private:
     std::fstream file_;

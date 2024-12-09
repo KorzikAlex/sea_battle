@@ -120,6 +120,12 @@ public:
     void popAbility();
 
     /**
+     * @brief Adds a new ability to the abilities queue.
+     *
+     * @param ability The ability to be added to the queue.
+     */
+    void addAbility(Abilities ability);
+    /**
      * @brief Destructs the AbilityManager object.
      *
      * This destructor is responsible for cleaning up resources used by the AbilityManager.
@@ -146,10 +152,5 @@ private:
      */
     Board &board_;
 
-    /**
-     * @brief Adds a new ability to the abilities queue.
-     *
-     * @param ability The ability to be added to the queue.
-     */
-    void addAbility(Abilities ability);
+
 };

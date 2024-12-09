@@ -175,6 +175,8 @@ public:
      */
     void setOrientation(Orientation orientation);
 
+    // TODO: добавить описание
+    void setCoord(Coord coord);
     /**
      * @brief Destructor for the Ship class.
      *

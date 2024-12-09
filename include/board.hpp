@@ -37,6 +37,15 @@ public:
             kRevealed
         };
 
+        // TODO: описание добавить
+        enum class CellValue : char {
+            kShipPart = 'S',
+            kDamaged = 'D',
+            kDestroyed = 'X',
+            kWaterHidden = '~',
+            kWaterRevealed = '*'
+        };
+
         /**
          * @brief Status of the cell's visibility.
          *
@@ -51,6 +60,9 @@ public:
          * Initialized to nullptr, indicating no ship segment is initially present.
          */
         Ship::Segment *segment = nullptr;
+
+        // TODO: описание добавить
+        CellValue value;
 
         /**
          * @brief Changes the visibility status of the cell.
@@ -184,13 +196,15 @@ public:
     bool setShip(Ship &ship, Coord coord);
 
     void setShipRandomly(Ship &ship);
+
     /**
      * @brief Attacks the cell located at the given coordinates.
      *
      * @param coord The coordinates of the cell to attack.
      */
     void attack(Coord coord, int power = 1);
-    
+    // TODO: сделать описание
+    void attackRandomly();
     /**
      * @brief Prints the current state of the game board to the standard output
      *
@@ -230,5 +244,5 @@ private:
     /**
      * @brief 2D vector representing a grid of cells
      */
-    std::vector<std::vector<Cell> > field_;
+    std::vector<std::vector<Cell>> board_;
 };

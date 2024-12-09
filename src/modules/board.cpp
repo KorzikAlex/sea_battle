@@ -11,32 +11,31 @@
 #include "board.hpp"
 
 void Board::Cell::changeStatus() {
-    // change status of visibility
     if (this->status == CellVisibilityStatus::kHidden) this->status = CellVisibilityStatus::kRevealed;
 }
 
 bool Board::Cell::isSegmentAt() const {
-    return this->segment != nullptr; // return true if cell don't have segment of ship else false
+    return this->segment != nullptr;
 }
 
 Board::Board(int size_x = 10, int size_y = 10): size_x_(size_x), size_y_(size_y),
-                                                field_(this->size_y_, std::vector<Cell>(this->size_x_)) {
+                                                board_(this->size_y_, std::vector<Cell>(this->size_x_)) {
 };
 
-Board::Board(const Board &other): size_x_(other.size_x_), size_y_(other.size_y_), field_(other.field_) {
+Board::Board(const Board &other): size_x_(other.size_x_), size_y_(other.size_y_), board_(other.board_) {
 };
 
-Board::Board(Board &&other) noexcept: size_x_(other.size_x_), size_y_(other.size_y_), field_(std::move(other.field_)) {
+Board::Board(Board &&other) noexcept: size_x_(other.size_x_), size_y_(other.size_y_), board_(std::move(other.board_)) {
     other.size_x_ = 0;
     other.size_y_ = 0;
-    other.field_.clear();
+    other.board_.clear();
 };
 
 Board &Board::operator=(const Board &other) {
     if (this != &other) {
         this->size_x_ = other.size_x_;
         this->size_y_ = other.size_y_;
-        this->field_ = other.field_;
+        this->board_ = other.board_;
     }
     return *this;
 };
@@ -45,7 +44,7 @@ Board &Board::operator=(Board &&other) noexcept {
     if (this != &other) {
         this->size_x_ = other.size_x_;
         this->size_y_ = other.size_y_;
-        this->field_ = std::move(other.field_);
+        this->board_ = std::move(other.board_);
 
         other.size_x_ = 0;
         other.size_y_ = 0;
@@ -62,7 +61,6 @@ int Board::getSizeY() const {
 };
 
 bool Board::checkCoord(Coord coord) const {
-    // check if coord on board
     return coord.x >= 0 && coord.x < this->getSizeX() && coord.y >= 0 && coord.y < this->getSizeY();
 };
 
@@ -76,14 +74,13 @@ bool Board::checkCoordAround(Coord coord) {
 };
 
 bool Board::isShipAtBoard(Coord coord) {
-    Cell &board_cell = this->getCell(coord);
-    return (board_cell.segment != nullptr);
+    return this->getCell(coord).isSegmentAt();
 };
 
 
 Board::Cell &Board::getCell(Coord coord) {
-    if (this->checkCoord(coord)) return this->field_.at(coord.y).at(coord.x);
-    throw std::out_of_range("Coordinate out of range");
+    if (this->checkCoord(coord)) return this->board_.at(coord.y).at(coord.x);
+    throw OutOfRangeException("Coordinate out of range");
 };
 
 void Board::attack(Coord coord, int power) {
@@ -109,7 +106,7 @@ bool Board::setShip(Ship &ship, Coord coord) {
             if (this->isShipAtBoard(Coord{coord.x + i, coord.y}))
                 throw IncorrectShipPositionException("Incorrect ship placement!");;
         };
-        for (int i = 0; i < ship.getSize(); ++i) this->field_.at(coord.y).at(coord.x + i).segment = ship.getSegment(i);
+        for (int i = 0; i < ship.getSize(); ++i) this->board_.at(coord.y).at(coord.x + i).segment = ship.getSegment(i);
         return true;
     }
     if (!this->checkCoord(Coord{coord.x, coord.y + ship.getSize()})) {
@@ -120,26 +117,25 @@ bool Board::setShip(Ship &ship, Coord coord) {
         if (!this->checkCoordAround(Coord{coord.x, coord.y + i})) return false;
         if (this->isShipAtBoard(Coord{coord.x, coord.y + i})) return false;
     };
-    for (int i = 0; i < ship.getSize(); i++) this->field_.at(coord.y + i).at(coord.x).segment = ship.getSegment(i);
+    for (int i = 0; i < ship.getSize(); i++) this->board_.at(coord.y + i).at(coord.x).segment = ship.getSegment(i);
     return true;
 }
 
 void Board::setShipRandomly(Ship &ship) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> disX(0, this->getSizeX() - 1);
-    std::uniform_int_distribution<> disY(0, this->getSizeY() - 1);
-    std::uniform_int_distribution<> disOrientation(0, 1);
+    std::uniform_int_distribution<> dis_x(0, this->getSizeX() - 1);
+    std::uniform_int_distribution<> dis_y(0, this->getSizeY() - 1);
+    std::uniform_int_distribution<> dis_orientation(0, 1);
 
-    int j = 0;
     while (true) {
-        int randomX = disX(gen);
-        int randomY = disY(gen);
-        int randOrientation = disOrientation(gen);
+        int random_x = dis_x(gen);
+        int random_y = dis_y(gen);
+        int rand_orientation = dis_orientation(gen);
 
-        if (randOrientation == 1) ship.setOrientation(Ship::Orientation::kVertical);
+        if (rand_orientation == 1) ship.setOrientation(Ship::Orientation::kVertical);
         try {
-            this->setShip(ship, {randomX, randomY});
+            this->setShip(ship, {random_x, random_y});
             break;
         } catch (IncorrectShipPositionException &e) {
         }

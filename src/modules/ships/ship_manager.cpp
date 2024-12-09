@@ -33,6 +33,13 @@ Ship &ShipManager::getShip(Ship::Segment *segment) {
     throw OutOfRangeException("Ship does not exist");
 }
 
+Ship &ShipManager::getShip(Coord coord) {
+    for (Ship &ship: this->ships_)
+        for (int i = 0; i < ship.getSize(); i++)
+            if (ship.getSegment(i)->segment_coord.x == coord.x && ship.getSegment(i)->segment_coord.y == coord.y)
+                return ship;
+    throw OutOfRangeException("Ship does not exist");
+}
 
 void ShipManager::addShip(int size, Ship::Orientation orientation) {
     this->ships_.push_back(Ship(size, orientation));
@@ -53,9 +60,12 @@ void ShipManager::changeShipOrientation(int index, Ship::Orientation new_orienta
 }
 
 void ShipManager::checkShips() {
-    this->n_destroyed_ships_ = 0;
-    for (const Ship &ship: this->ships_) if (ship.isDestroyed()) n_destroyed_ships_++;
+    this->n_alive_ships_ = 0;
+    for (const Ship &ship: this->ships_) if (!ship.isDestroyed()) n_alive_ships_++;
 }
 
+int ShipManager::getShipsAlive()const {
+    return this->n_alive_ships_;
+}
 
 ShipManager::~ShipManager() = default;

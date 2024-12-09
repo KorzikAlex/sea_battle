@@ -15,19 +15,19 @@
 #include "ships/ship_manager.hpp"
 #include "abilities/ability_manager.hpp"
 #include "units.hpp"
+#include "game.hpp"
+#include "game_state.hpp"
 
 #include "exceptions/invalid_ship_size.hpp"
-#include "game.hpp"
+
 
 /**
- * @brief Entry point of the program.
+ * Main execution entry-point for the program. This function initializes necessary components
+ * and starts the main processing loop or lifecycle for the application.
  *
- * This function initializes the game and checks for successful initialization.
- * If initialization fails, it outputs an error message.
- *
- * @param argc Number of command-line arguments.
- * @param argv Array of command-line arguments.
- * @return int Returns EXIT_SUCCESS if the game initializes successfully, otherwise EXIT_FAILURE.
+ * @param argc The number of command-line arguments passed to the program.
+ * @param argv An array of C-style strings representing the command-line arguments.
+ * @return An integer status code where a value of 0 typically indicates successful execution.
  */
 int main(int argc, char **argv) {
     CLIParser cli_parser(argc, argv);

@@ -30,19 +30,32 @@ public:
      */
     explicit Game(PlayerUnit player, BotUnit bot, GameState game_state);
 
-    void startGame() const;
+    ~Game();
+
+    void startGame();
 
     void doPlayerMove();
 
     void doBotMove();
 
+    void doPlayerAbility();
+
     void loadGame(const std::string &file_name);
 
     void saveGame(const std::string &file_name);
 
+    void isGameEnd();
+
     void resetGame();
+
+    void resetRound();
+
 private:
     PlayerUnit player_;
     BotUnit bot_;
     GameState game_state_;
+
+    bool is_player_win_cond_;
+    bool is_bot_win_cond_;
+    bool is_game_end_cond_;
 };
