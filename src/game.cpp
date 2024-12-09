@@ -12,6 +12,8 @@
 #include "game.hpp"
 
 #include "exceptions/no_available_abilities.hpp"
+#include "exceptions/invalid_coordinate.hpp"
+#include "exceptions/revealed_cell_attack.hpp"
 
 using json = nlohmann::json;
 
@@ -160,7 +162,7 @@ void Game::doPlayerMove() {
             if (std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw InvalidCoordinateException();
+                throw InvalidCoordinateException("Invalid input coords!");
             }
 
             for (int i = 0; i < this->game_state_.getCurrentDamage(); i++) {
@@ -172,9 +174,7 @@ void Game::doPlayerMove() {
             continue;
         }
         catch (RevealedCellAttackException &e) {
-            if (successAttack) {
-                break;
-            }
+            if (successAttack) break;
             std::cout << e.what() << std::endl;
             continue;
         }
@@ -186,8 +186,8 @@ void Game::doPlayerMove() {
     }
     this->game_state_.setCurrentDamage(1);
 
-    Ship *bot_ship = this->player_.getShipManager().getShip(coord);
-    if (bot_ship != nullptr && bot_ship->isDestroyed()) {
+    Ship& bot_ship = this->player_.getShipManager().getShip(coord);
+    if (bot_ship.isDestroyed()) {
         this->player_.getBoard().revealCoordinatesAround(bot_ship);
         this->player_.getShipManager().checkShips();
         std::cout << "Ability added." << std::endl;
@@ -202,12 +202,12 @@ void Game::doPlayerMove() {
 
 void Game::doBotMove() {
     Coord coords;
-    try {
-        coords = this->bot_.getBoard().attackRandomly();
-    } catch (MultipleMissesException &e) {
-        std::cout << e.what() << std::endl;
-        return;
-    }
+    // try {
+    this->bot_.getBoard().attackRandomly();
+    // } catch (MultipleMissesException &e) {
+    //     std::cout << e.what() << std::endl;
+    //     return;
+    // }
 
     Ship& selfShip = this->bot_.getShipManager().getShip(coords);
     if (selfShip.isDestroyed()) {
@@ -234,7 +234,7 @@ void Game::doPlayerAbility() {
         Coord coord = {-1, -1};
         AbilityParameters ap(this->player_.getBoard(), this->player_.getShipManager(), coord,
                              this->game_state_.getCurrentDamage());
-        this->player_.getAbilityManager().checkIfEmpty();
+        this->player_.getAbilityManager().isEmpty();
         std::cout << this->player_.getAbilityManager().returnAbilityName() << std::endl;
 
         try {

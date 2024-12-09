@@ -214,6 +214,7 @@ public:
      */
     void printBoard();
 
+    void revealCoordinatesAround(Ship& ship);
     /**
      * @brief Prints the current status of the game board.
      *

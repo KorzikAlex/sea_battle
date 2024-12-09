@@ -12,7 +12,7 @@
 
 
 AbilityManager::AbilityManager(Board &board): board_(board) {
-    std::array<Abilities, 3> abilities = {Abilities::DoubleAttack, Abilities::Scanner, Abilities::RandomAttack};
+    std::array<Abilities, 3> abilities = {Abilities::kDoubleAttack, Abilities::kScanner, Abilities::kRandomAttack};
     std::random_device rd;
     std::mt19937 gen(rd());
     std::shuffle(abilities.begin(), abilities.end(), gen);
@@ -37,11 +37,11 @@ void AbilityManager::popAbility() {
 
 void AbilityManager::useAbility(Coord coord) {
     Abilities ability = this->abilities_.front();
-    if (coord.x == -1 && coord.y == -1 && ability == Abilities::RandomAttack)
+    if (coord.x == -1 && coord.y == -1 && ability == Abilities::kRandomAttack)
         RandomAttack(this->board_).realizeAbility();
-    else if (ability == Abilities::DoubleAttack)
+    else if (ability == Abilities::kDoubleAttack)
         DoubleAttack(this->board_, coord).realizeAbility();
-    else if (ability == Abilities::Scanner)
+    else if (ability == Abilities::kScanner)
         Scanner(this->board_, coord).realizeAbility();
     this->popAbility();
 }
@@ -52,15 +52,15 @@ void AbilityManager::giveRandomAbility() {
 
     switch (gen() % 3) {
         case 0: {
-            this->addAbility(Abilities::DoubleAttack);
+            this->addAbility(Abilities::kDoubleAttack);
             break;
         }
         case 1: {
-            this->addAbility(Abilities::Scanner);
+            this->addAbility(Abilities::kScanner);
             break;
         }
         case 2: {
-            this->addAbility(Abilities::RandomAttack);
+            this->addAbility(Abilities::kRandomAttack);
             break;
         }
         default:
@@ -69,11 +69,11 @@ void AbilityManager::giveRandomAbility() {
 }
 
 std::string AbilityManager::returnAbilityName() const {
-    if (this->abilities_.front() == Abilities::Scanner)
+    if (this->abilities_.front() == Abilities::kScanner)
         return "Scanner";
-    if (this->abilities_.front() == Abilities::DoubleAttack)
+    if (this->abilities_.front() == Abilities::kDoubleAttack)
         return "DoubleAttack";
-    if (this->abilities_.front() == Abilities::RandomAttack)
+    if (this->abilities_.front() == Abilities::kRandomAttack)
         return "RandomAttack";
     throw "Can't return Ability Name";
 }

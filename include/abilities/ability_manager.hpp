@@ -34,9 +34,9 @@ public:
     * @brief Enum class representing the different types of abilities available in the game.
     */
     enum class Abilities {
-        DoubleAttack,
-        Scanner,
-        RandomAttack
+        kDoubleAttack,
+        kScanner,
+        kRandomAttack
     };
 
     /**

@@ -77,6 +77,22 @@ bool Board::isShipAtBoard(Coord coord) {
     return this->getCell(coord).isSegmentAt();
 };
 
+void Board::revealCoordinatesAround(Ship &ship) {
+    for (int k = 0; k < ship.getSize(); ++k) {
+        for (int i = -1; i <= 1; ++i) {
+            for (int j = -1; j <= 1; ++j) {
+                if (!this->checkCoord(
+                    {ship.getSegment(k)->segment_coord.x + i, ship.getSegment(k)->segment_coord.y + j})) {
+                    Cell &board_cell = this->board_[ship.getSegment(k)->segment_coord.y + j]
+                    [ship.getSegment(k)->segment_coord.x + i];
+                    if (board_cell.value != Cell::CellValue::kWaterHidden) continue;
+                    board_cell.status = Cell::CellVisibilityStatus::kRevealed;
+                    board_cell.value = Cell::CellValue::kWaterRevealed;
+                }
+            }
+        }
+    }
+};
 
 Board::Cell &Board::getCell(Coord coord) {
     if (this->checkCoord(coord)) return this->board_.at(coord.y).at(coord.x);
