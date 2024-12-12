@@ -45,6 +45,13 @@ void AbilityManager::useAbility(Coord coord) {
         Scanner(this->board_, coord).realizeAbility();
     this->popAbility();
 }
+void AbilityManager::useAbility(AbilityParameters ap) {
+    this->isEmpty();
+    Abilities ability = this->abilities_.front();
+    useAbility();
+    ability->createAbility(ap)->implementAbility();
+    this->popAbility();
+}
 
 void AbilityManager::giveRandomAbility() {
     std::random_device rd;

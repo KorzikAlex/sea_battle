@@ -82,7 +82,7 @@ public:
          */
         bool isSegmentAt() const;
     };
-
+    Board() : size_x_(0), size_y_(0) {};
     /**
      * @brief Constructs a new Board object with specified dimensions.
      *

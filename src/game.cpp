@@ -241,7 +241,7 @@ void Game::doPlayerAbility() {
             if (this->player_.getAbilityManager().getCreator(0).isUsingCoordinate()) {
                 std::cout << "Give coordinates for ability." << std::endl;
                 std::cin >> coord.x >> coord.y;
-                ap.coordinate = coord;
+                ap.coord = coord;
             }
             this->player_.getAbilityManager().useAbility(ap);
         } catch (RevealedCellAttackException &e) {

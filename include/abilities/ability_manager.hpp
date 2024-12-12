@@ -38,7 +38,7 @@ public:
         kScanner,
         kRandomAttack
     };
-
+    AbilityManager();
     /**
      * @brief Constructs an AbilityManager object that manages game abilities.
      *
@@ -110,7 +110,7 @@ public:
      *              coord (e.g., (-1, -1)) may be used to trigger specific behavior for certain abilities.
      */
     void useAbility(Coord coord = {-1, -1});
-
+    void useAbility(AbilityParameters ap);
     /**
      * @brief Removes the front ability from the ability queue.
      *

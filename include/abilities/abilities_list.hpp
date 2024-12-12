@@ -12,11 +12,23 @@
 
 #include <iostream>
 #include <random>
+#include "ships/ship_manager.hpp"
 
 #include "structures.hpp"
 #include "board.hpp"
 
 #include "exceptions/out_of_range.hpp"
+
+struct AbilityParameters {
+    Board& board;
+    ShipManager& shipManager;
+    Coord& coord;
+    int& currentDamage;
+
+    AbilityParameters(Board& board, ShipManager& sm, Coord& coord, int& currentDamage)
+        : board(board), shipManager(sm), coord(coord), currentDamage(currentDamage) {};
+};
+
 /**
  * @class Ability
  * @brief Abstract base class representing a generic ability.

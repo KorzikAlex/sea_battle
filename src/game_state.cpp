@@ -64,22 +64,22 @@ FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
     Board board;
     AbilityManager ability_manager;
 
-    ShipManager enemy_ship_manager;
-    Board enemyField;
+    ShipManager bot_ship_manager;
+    Board bot_board;
 
     deser.from_json(ship_manager, "player_ship_manager");
     deser.from_json(board, "player_board");
     deser.from_json(ability_manager, "player_ability_manager");
 
-    deser.from_json(enemy_ship_manager, "bot_ship_manager");
-    deser.from_json(enemyField, "bot_board");
+    deser.from_json(bot_ship_manager, "bot_ship_manager");
+    deser.from_json(bot_board, "bot_board");
 
     state.getPlayer().getShipManager() = ship_manager;
     state.getPlayer().getBoard() = board;
     state.getPlayer().getAbilityManager() = ability_manager;
 
-    state.getBot().getShipManager() = enemy_ship_manager;
-    state.getBot().getBoard() = enemyField;
+    state.getBot().getShipManager() = bot_ship_manager;
+    state.getBot().getBoard() = bot_board;
 
     state.placeShips(state.getPlayer().getShipManager(), state.getPlayer().getBoard());
     state.placeShips(state.getBot().getShipManager(), state.getBot().getBoard());

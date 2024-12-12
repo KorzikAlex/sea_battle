@@ -23,6 +23,7 @@
  */
 class ShipManager {
 public:
+    ShipManager() : ships_({}) {};
     /**
      * @brief Constructs a ShipManager with a given list of ship sizes
      *
