@@ -23,7 +23,7 @@
  */
 class ShipManager {
 public:
-    ShipManager() : ships_({}) {};
+    ShipManager() : ships_({}) {}
     /**
      * @brief Constructs a ShipManager with a given list of ship sizes
      *
@@ -95,7 +95,7 @@ public:
 
     // TODO: добавить описание checkShips
     void checkShips();
-    int getShipsAlive() const;
+    int getShipsAlive();
     /**
      * @brief Destructor for the ShipManager class
      *

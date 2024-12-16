@@ -11,11 +11,14 @@
 
 #include "game.hpp"
 
+#include <renderer.hpp>
+
+#include "board.hpp"
+
 #include "exceptions/no_available_abilities.hpp"
 #include "exceptions/invalid_coordinate.hpp"
 #include "exceptions/revealed_cell_attack.hpp"
 
-using json = nlohmann::json;
 
 Game::Game(PlayerUnit player, BotUnit bot, GameState game_state): player_(player), bot_(bot),
                                                                   game_state_(game_state), is_bot_win_cond_(false),
@@ -24,15 +27,16 @@ Game::Game(PlayerUnit player, BotUnit bot, GameState game_state): player_(player
 
 void Game::startGame() {
     std::string answer;
-    const std::string file = "savefile.json";
+    Renderer renderer;
+    const std::string file = "save_file.json";
     while (!this->is_game_end_cond_) {
         std::string line;
-        std::cout << "Push 'p' to play, 'l' to load game, 's' to save game, 'q' to quit. [p/l/s/q] ";
+        std::cout << "'p' - play\t'l' - load game\n's' - save game\t'q' - quit.\n[p/l/s/q] ";
         std::cin >> line;
         if (line.size() == 1) {
             switch (line[0]) {
                 case 'p': {
-                    // painter.printFields(bot.getField(), player.getField());
+                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     if (!this->game_state_.getIsAbilityUsed()) {
                         try {
                             this->doPlayerAbility();
@@ -44,29 +48,35 @@ void Game::startGame() {
                             std::cerr << e.what() << std::endl;
                             break;
                         }
-                        std::cout << "Do you want to quit/load/save the game? y/n" << std::endl;
+                        std::cout << "Do you want to save the game? [Y/n]" << std::endl;
                         std::cin >> answer;
                         if (answer == "y" || answer == "Y") {
+                            this->saveGame(file);
                             break;
                         }
                     }
 
-                    // painter.printFields(bot.getField(), player.getField());
-                    doPlayerMove();
-                    doBotMove();
-
-                    // для отладки
-                    // for (int i = 0; i < 10; i++)
-                    //     painter.printShip(player.getShipManager().getShipByIndex(i));
-
-                    // painter.printFields(bot.getField(), player.getField());
+                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
+                    try {
+                        doPlayerMove();
+                    }
+                    catch (OutOfRangeException &e) {
+                        renderer.printException(e);
+                    }
+                    try {
+                        doBotMove();
+                    }
+                    catch (OutOfRangeException &e) {
+                        renderer.printException(e);
+                    }
                     this->isGameEnd();
+                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }
                 case 'l': {
                     std::cout << "Loading the game..." << std::endl;
                     this->loadGame(file);
-                    // painter.printFields(bot.getField(), player.getField());
+                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }
                 case 's': {
@@ -123,11 +133,12 @@ void Game::resetGame() {
     ShipManager new_player_ship_manager = ShipManager(default_ship_sizes);
     for (size_t i = 0; i < default_ship_sizes.size(); i++)
         new_player_board.setShipRandomly(new_player_ship_manager[i]);
-    // new_player_board.revealCells();
+    new_player_board.revealCells();
     this->bot_ = BotUnit(new_player_ship_manager, new_player_board);
 }
 
 void Game::isGameEnd() {
+    Renderer renderer;
     if (!this->is_player_win_cond_ && !this->is_bot_win_cond_) {
         this->is_game_end_cond_ = false;
         return;
@@ -144,12 +155,12 @@ void Game::isGameEnd() {
     if (this->is_player_win_cond_) {
         resetRound();
         this->is_player_win_cond_ = false;
-        // painter.printFields(this->bot_.getBoard(), this->player_.getBoard());
+        renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
     }
     if (this->is_bot_win_cond_) {
         resetGame();
         this->is_bot_win_cond_ = false;
-        // painter.printFields(this->bot_.getBoard(), this->player_.getBoard());
+        renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
     }
 }
 
@@ -186,12 +197,14 @@ void Game::doPlayerMove() {
     }
     this->game_state_.setCurrentDamage(1);
 
-    Ship& bot_ship = this->player_.getShipManager().getShip(coord);
-    if (bot_ship.isDestroyed()) {
-        this->player_.getBoard().revealCoordinatesAround(bot_ship);
-        this->player_.getShipManager().checkShips();
-        std::cout << "Ability added." << std::endl;
-        this->player_.getAbilityManager().giveRandomAbility();
+    if (this->player_.getBoard().isShipAtBoard(coord)) {
+        Ship& bot_ship = this->player_.getShipManager().getShip(coord);
+        if (bot_ship.isDestroyed()) {
+            this->player_.getBoard().revealCoordinatesAround(bot_ship);
+            this->player_.getShipManager().checkShips();
+            std::cout << "Ability added." << std::endl;
+            this->player_.getAbilityManager().giveRandomAbility();
+        }
     }
     if (this->player_.getShipManager().getShipsAlive() == 0) {
         std::cout << "You win!" << std::endl;
@@ -201,21 +214,14 @@ void Game::doPlayerMove() {
 }
 
 void Game::doBotMove() {
-    Coord coords;
-    // try {
-    this->bot_.getBoard().attackRandomly();
-    // } catch (MultipleMissesException &e) {
-    //     std::cout << e.what() << std::endl;
-    //     return;
-    // }
-
-    Ship& selfShip = this->bot_.getShipManager().getShip(coords);
-    if (selfShip.isDestroyed()) {
-        this->bot_.getBoard().revealCoordinatesAround(selfShip);
-        this->bot_.getShipManager().checkShips();
-        // this->bot_.getShipManager().setShipsAlive(this->bot_.getShipManager().getShipsAlive() - 1);
+    Coord coord = this->bot_.getBoard().attackRandomly();
+    if (this->bot_.getBoard().isShipAtBoard(coord)) {
+        Ship& player_ship = this->bot_.getShipManager().getShip(coord);
+        if (player_ship.isDestroyed()) {
+            this->bot_.getBoard().revealCoordinatesAround(player_ship);
+            this->bot_.getShipManager().checkShips();
+        }
     }
-
     if (this->bot_.getShipManager().getShipsAlive() == 0) {
         std::cout << "You lose!" << std::endl;
         this->is_bot_win_cond_ = true;
@@ -226,19 +232,16 @@ void Game::doPlayerAbility() {
     std::cout << "You have " << this->player_.getAbilityManager().getAbilityCount() << " abilities available." <<
             std::endl;
     std::cout << "Use random ability? [Y/n] ";
-
     std::string result;
     std::cin >> result;
 
     if (result == "y" || result == "Y") {
         Coord coord = {-1, -1};
-        AbilityParameters ap(this->player_.getBoard(), this->player_.getShipManager(), coord,
-                             this->game_state_.getCurrentDamage());
+        AbilityParameters ap(this->bot_.getBoard(), this->bot_.getShipManager(), coord);
         this->player_.getAbilityManager().isEmpty();
         std::cout << this->player_.getAbilityManager().returnAbilityName() << std::endl;
-
         try {
-            if (this->player_.getAbilityManager().getCreator(0).isUsingCoordinate()) {
+            if (this->player_.getAbilityManager().returnAbilityCreator(0).isUsingCoordinate()) {
                 std::cout << "Give coordinates for ability." << std::endl;
                 std::cin >> coord.x >> coord.y;
                 ap.coord = coord;

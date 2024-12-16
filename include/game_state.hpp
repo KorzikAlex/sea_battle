@@ -6,6 +6,7 @@
 
 #include "units.hpp"
 #include "json_modules/file_wrapper.hpp"
+#include "json_modules/serizalization.hpp"
 
 // TODO: добавить описания
 class GameState {

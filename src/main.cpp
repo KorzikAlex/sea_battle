@@ -9,6 +9,9 @@
  * 
  */
 #include <iostream>
+#include <locale>
+
+#include "renderer.hpp"
 #include "cli_parser.hpp"
 
 #include "board.hpp"
@@ -30,7 +33,10 @@
  * @return An integer status code where a value of 0 typically indicates successful execution.
  */
 int main(int argc, char **argv) {
+    setlocale(0, "");
+
     CLIParser cli_parser(argc, argv);
+    Renderer renderer;
     const int kSizeX = cli_parser.getSizeX();
     const int kSizeY = cli_parser.getSizeY();
 
@@ -41,27 +47,28 @@ int main(int argc, char **argv) {
     try {
         for (auto &size: default_ship_sizes)
             if (size < 1 || size > 4)
-                throw InvalidShipSizeException("Invalid ship size. It must be between 1 and 4.");
-    } catch (const InvalidShipSizeException &e) {
-        std::cout << e.what() << std::endl;
+                throw InvalidShipSizeException();
+    } catch (InvalidShipSizeException &e) {
+        renderer.printException(e);
         return EXIT_FAILURE;
     }
 
     ShipManager player_ship_manager(default_ship_sizes);
     ShipManager bot_ship_manager(default_ship_sizes);
 
-    for (size_t i = 0; i < default_ship_sizes.size(); ++i) bot_board.setShipRandomly(bot_ship_manager[i]);
-    // TODO: сделать возможность расстановки кораблей
-    for (size_t i = 0; i < default_ship_sizes.size(); ++i) player_board.setShipRandomly(bot_ship_manager[i]);
-    AbilityManager player_ability_manager(player_board);
+    for (size_t i = 0; i < default_ship_sizes.size(); ++i) {
+        player_board.setShipRandomly(player_ship_manager[i]);
+        bot_board.setShipRandomly(bot_ship_manager[i]);
+    }
+
+    player_board.revealCells();
+    bot_board.revealCells();
+    renderer.printBoards(player_board, bot_board);
+
+    AbilityManager player_ability_manager;
 
     PlayerUnit player(bot_ship_manager, bot_board, player_ability_manager);
     BotUnit bot(player_ship_manager, player_board);
-
-    std::cout << "Player board" << std::endl;
-    player.getBoard().printBoard();
-    std::cout << "Bot board" << std::endl;
-    bot.getBoard().printBoard();
 
     GameState game_state(player, bot);
     Game game = Game(player, bot, game_state);

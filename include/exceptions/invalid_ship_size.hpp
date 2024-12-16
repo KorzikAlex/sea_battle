@@ -11,14 +11,10 @@
 #pragma once
 
 #include <exception>
-#include <string>
 
 class InvalidShipSizeException : public std::exception {
 public:
-    explicit InvalidShipSizeException(const std::string &message);
-
-    const char *what() const noexcept override;
-
-private:
-    std::string message_;
+    const char *what() const noexcept {
+        return "Invalid ship size. It must be between 1 and 4.";
+    }
 };

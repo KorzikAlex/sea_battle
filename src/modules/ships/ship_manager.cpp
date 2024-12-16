@@ -64,7 +64,8 @@ void ShipManager::checkShips() {
     for (const Ship &ship: this->ships_) if (!ship.isDestroyed()) n_alive_ships_++;
 }
 
-int ShipManager::getShipsAlive()const {
+int ShipManager::getShipsAlive() {
+    this->checkShips();
     return this->n_alive_ships_;
 }
 

@@ -20,6 +20,7 @@
 
 #include "exceptions/out_of_range.hpp"
 #include "exceptions/incorrect_ship_position.hpp"
+#include "exceptions/revealed_cell_attack.hpp"
 /**
  * @brief Class representing a game board
  */
@@ -82,7 +83,7 @@ public:
          */
         bool isSegmentAt() const;
     };
-    Board() : size_x_(0), size_y_(0) {};
+    Board() : size_x_(0), size_y_(0) {}
     /**
      * @brief Constructs a new Board object with specified dimensions.
      *
@@ -193,7 +194,7 @@ public:
      * @param coord Coordinates on the board where the ship's placement should start.
      * @return True if the ship was successfully placed, false otherwise.
      */
-    bool setShip(Ship &ship, Coord coord);
+    void setShip(Ship &ship, Coord coord);
 
     void setShipRandomly(Ship &ship);
 
@@ -204,7 +205,7 @@ public:
      */
     void attack(Coord coord, int power = 1);
     // TODO: сделать описание
-    void attackRandomly();
+    Coord attackRandomly();
     /**
      * @brief Prints the current state of the game board to the standard output
      *
@@ -228,6 +229,7 @@ public:
      */
     void printBoardStatus();
 
+    void revealCells();
     /**
      * @brief Destructor for the Board class
      */

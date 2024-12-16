@@ -1,4 +1,5 @@
 #include "json_modules/deserialization.hpp"
+Deserialization::Deserialization(nlohmann::json& json_file) : json_file_(json_file) {};
 
 void Deserialization::from_json(ShipManager &ship_manager, std::string key) {
     const auto &jsm = this->json_file_.at(key);
@@ -42,8 +43,8 @@ void Deserialization::from_json(AbilityManager &abilityManager, std::string key)
     abilityManager.popAbility();
 
     for (const auto &jability: jam.at("abilities")) {
-        if (jability == "DoubleAttack") abilityManager.addAbility(AbilityManager::Abilities::kDoubleAttack);
-        else if (jability == "Scanner") abilityManager.addAbility(AbilityManager::Abilities::kScanner);
-        else if (jability == "RandomAttack") abilityManager.addAbility(AbilityManager::Abilities::kRandomAttack);
+        if (jability == "DoubleAttack") abilityManager.addAbility(new DoubleAttackAbilityCreator());
+        else if (jability == "Scanner") abilityManager.addAbility(new ScannerAbilityCreator());
+        else if (jability == "RandomAttack") abilityManager.addAbility(new RandomAttackAbilityCreator());
     }
 }

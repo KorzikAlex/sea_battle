@@ -9,7 +9,7 @@
 
 class Deserialization {
 public:
-    Deserialization(nlohmann::json& json_file) : json_file_(json_file) {};
+    Deserialization(nlohmann::json& json_file);
 
     void from_json(ShipManager& ship_manager, std::string key);
     void from_json(Board& board, std::string key);

@@ -10,7 +10,8 @@
 
 class Serialization {
 public:
-    Serialization(nlohmann::json &json_file);
+    explicit Serialization(nlohmann::json &json_file);
+
     ~Serialization();
 
     void to_json(ShipManager &ship_manager, std::string key);

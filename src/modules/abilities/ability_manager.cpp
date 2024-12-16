@@ -11,12 +11,18 @@
 #include "abilities/ability_manager.hpp"
 
 
-AbilityManager::AbilityManager(Board &board): board_(board) {
-    std::array<Abilities, 3> abilities = {Abilities::kDoubleAttack, Abilities::kScanner, Abilities::kRandomAttack};
+AbilityManager::AbilityManager() {
+    std::vector<AbilityCreator *> ability_creators = {
+        new DoubleAttackAbilityCreator(),
+        new ScannerAbilityCreator(),
+        new RandomAttackAbilityCreator()
+    };
+
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::shuffle(abilities.begin(), abilities.end(), gen);
-    this->abilities_.push(abilities[0]);
+
+    std::shuffle(ability_creators.begin(), ability_creators.end(), gen);
+    this->abilities_.push(ability_creators[0]);
 }
 
 int AbilityManager::getAbilityCount() const {
@@ -27,47 +33,36 @@ void AbilityManager::isEmpty() const {
     if (this->abilities_.empty()) throw NoAvailableAbilitiesException("You don't have abilities!");
 }
 
-void AbilityManager::addAbility(Abilities ability) {
-    this->abilities_.push(ability);
+void AbilityManager::addAbility(AbilityCreator* ability_creator) {
+    this->abilities_.push(ability_creator);
 }
 
 void AbilityManager::popAbility() {
     this->abilities_.pop();
 }
 
-void AbilityManager::useAbility(Coord coord) {
-    Abilities ability = this->abilities_.front();
-    if (coord.x == -1 && coord.y == -1 && ability == Abilities::kRandomAttack)
-        RandomAttack(this->board_).realizeAbility();
-    else if (ability == Abilities::kDoubleAttack)
-        DoubleAttack(this->board_, coord).realizeAbility();
-    else if (ability == Abilities::kScanner)
-        Scanner(this->board_, coord).realizeAbility();
-    this->popAbility();
-}
 void AbilityManager::useAbility(AbilityParameters ap) {
     this->isEmpty();
-    Abilities ability = this->abilities_.front();
-    useAbility();
-    ability->createAbility(ap)->implementAbility();
-    this->popAbility();
+    AbilityCreator* ability = this->abilities_.front();
+    ability->createAbility(ap)->realizeAbility();
+    delete ability;
+    this->abilities_.pop();
 }
 
 void AbilityManager::giveRandomAbility() {
     std::random_device rd;
     std::mt19937 gen(rd());
-
     switch (gen() % 3) {
         case 0: {
-            this->addAbility(Abilities::kDoubleAttack);
+            this->addAbility(new DoubleAttackAbilityCreator);
             break;
         }
         case 1: {
-            this->addAbility(Abilities::kScanner);
+            this->addAbility(new ScannerAbilityCreator);
             break;
         }
         case 2: {
-            this->addAbility(Abilities::kRandomAttack);
+            this->addAbility(new RandomAttackAbilityCreator);
             break;
         }
         default:
@@ -75,18 +70,20 @@ void AbilityManager::giveRandomAbility() {
     }
 }
 
+AbilityCreator& AbilityManager::returnAbilityCreator(int index) const {
+    this->isEmpty();
+    std::queue<AbilityCreator*> tmp = this->abilities_;
+    for (int i = 0; i < index; ++i) tmp.pop();
+    return *tmp.front();
+}
+
+AbilityManager::~AbilityManager() {
+    while (!this->abilities_.empty())
+        this->abilities_.pop();
+};
+
 std::string AbilityManager::returnAbilityName() const {
-    if (this->abilities_.front() == Abilities::kScanner)
-        return "Scanner";
-    if (this->abilities_.front() == Abilities::kDoubleAttack)
-        return "DoubleAttack";
-    if (this->abilities_.front() == Abilities::kRandomAttack)
-        return "RandomAttack";
-    throw "Can't return Ability Name";
+    this->isEmpty();
+    return this->abilities_.front()->getName();
 }
 
-AbilityManager::Abilities AbilityManager::returnAbility() const {
-    return this->abilities_.front();
-}
-
-AbilityManager::~AbilityManager() = default;

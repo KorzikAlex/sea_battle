@@ -1,5 +1,8 @@
 #include "json_modules/serizalization.hpp"
 
+Serialization::Serialization(nlohmann::json& json_file): json_file_(json_file) {
+
+}
 
 void Serialization::to_json(ShipManager &ship_manager, std::string key) {
     nlohmann::json jsm = nlohmann::json{};
@@ -48,3 +51,6 @@ void Serialization::to_json(AbilityManager &ability_manager, std::string key) {
     if (ability_manager.getAbilityCount() == 0) jam["abilities"].push_back("");
     this->json_file_[key] = jam;
 }
+
+
+Serialization::~Serialization() = default;

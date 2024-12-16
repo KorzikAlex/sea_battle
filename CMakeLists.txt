@@ -12,11 +12,7 @@ FetchContent_MakeAvailable(json)
 
 set(src src)
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(main "sea_battle.exe")
-else()
-    set(main "sea_battle.out")
-endif()
+set(main "sea_battle")
 
 file(GLOB_RECURSE SOURCES_
         ${src}/*.cpp
