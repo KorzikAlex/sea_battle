@@ -8,44 +8,44 @@ class Unit {
 public:
     Unit(ShipManager &ship_manager, Board &board);
 
-    virtual ShipManager &getShipManager() = 0;
+    virtual ShipManager &getShipManager() const noexcept = 0;
 
-    virtual Board &getBoard() = 0;
+    virtual Board &getBoard() const noexcept = 0;
 
-    virtual ~Unit();
+    virtual ~Unit() = default;
 
 protected:
     ShipManager &ship_manager_;
     Board &board_;
 };
 
-class PlayerUnit : public Unit {
+class PlayerUnit final : public Unit {
 public:
-    PlayerUnit(ShipManager &shipManager, Board &field, AbilityManager &ability_manager);
+    PlayerUnit(ShipManager &ship_manager, Board &board, AbilityManager &ability_manager);
 
     PlayerUnit(const PlayerUnit &other);
 
     PlayerUnit &operator=(const PlayerUnit &other);
 
-    ShipManager &getShipManager() override;
+    ShipManager &getShipManager() const noexcept override;
 
-    Board &getBoard() override;
+    Board &getBoard() const noexcept override;
 
-    AbilityManager &getAbilityManager();
+    AbilityManager &getAbilityManager() const noexcept;
 
 private:
     AbilityManager &ability_manager_;
 };
 
-class BotUnit : public Unit {
+class BotUnit final : public Unit {
 public:
-    BotUnit(ShipManager &shipManager, Board &board);
+    BotUnit(ShipManager &ship_manager, Board &board);
 
     BotUnit(const BotUnit &other);
 
     BotUnit &operator=(const BotUnit &other);
 
-    ShipManager &getShipManager() override;
+    ShipManager &getShipManager() const noexcept override;
 
-    Board &getBoard() override;
+    Board &getBoard() const noexcept override;
 };

@@ -1,11 +1,10 @@
 #include "json_modules/serizalization.hpp"
 
 Serialization::Serialization(nlohmann::json& json_file): json_file_(json_file) {
-
 }
 
 void Serialization::to_json(ShipManager &ship_manager, std::string key) {
-    nlohmann::json jsm = nlohmann::json{};
+    nlohmann::json jsm{};
 
     for (int i = 0; i < ship_manager.getShipCount(); i++) {
         Ship &temp = ship_manager[i];
@@ -24,8 +23,8 @@ void Serialization::to_json(ShipManager &ship_manager, std::string key) {
     this->json_file_[key] = jsm;
 }
 
-void Serialization::to_json(Board &board, std::string key) {
-    nlohmann::json jb = nlohmann::json{};
+void Serialization::to_json(Board &board, std::string key) const {
+    nlohmann::json jb{};
 
     jb["size_y"] = board.getSizeY();
     jb["size_x"] = board.getSizeX();
@@ -43,11 +42,11 @@ void Serialization::to_json(Board &board, std::string key) {
     this->json_file_[key] = jb;
 }
 
-void Serialization::to_json(AbilityManager &ability_manager, std::string key) {
-    nlohmann::json jam = nlohmann::json{};
+void Serialization::to_json(const AbilityManager &ability_manager, const std::string &key) {
+    nlohmann::json jam{};
 
     for (int i = 0; i < ability_manager.getAbilityCount(); i++)
-        jam["abilities"].push_back(ability_manager.returnAbilityName());
+        jam["abilities"].push_back(ability_manager.returnAbilityCreator(0).getName());
     if (ability_manager.getAbilityCount() == 0) jam["abilities"].push_back("");
     this->json_file_[key] = jam;
 }

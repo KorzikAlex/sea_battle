@@ -37,20 +37,18 @@ void Renderer::printBoards(Board self_board, Board other_board) const {
         std::cout << "\033[0m" << "  " << i;
         std::cout << " ";
     }
-
     std::cout << "    ";
-    for (int i = 0; i < size_y; i++) {
+    for (int i = 0; i < size_y; ++i) {
         std::cout << "\033[0m" << "  " << i;
         std::cout << " ";
     }
     std::cout << std::endl;
-    for (int i = 0; i < size_y * 2; i++) {
+    for (int i = 0; i < size_y * 2; ++i) {
         if (i == size_y) std::cout << "x   ";
         std::cout << "\033[1;30m" << "x---";
     }
-
     std::cout << "\033[30m" << "x" << std::endl;
-    for (int y = 0; y < size_y; y++) {
+    for (int y = 0; y < size_y; ++y) {
         std::cout << "\033[30m" << "| ";
         for (int x = 0; x < size_x; ++x) {
             if (self_board.getCell({x, y}).status == Board::Cell::CellVisibilityStatus::kRevealed)
@@ -69,7 +67,7 @@ void Renderer::printBoards(Board self_board, Board other_board) const {
             std::cout << "\033[30m" << " | ";
         }
         std::cout << std::endl;
-        for (int i = 0; i < size_y * 2; i++) {
+        for (int i = 0; i < size_y * 2; ++i) {
             if (i == size_y) std::cout << "x   ";
             std::cout << "\033[30m" << "x---";
         }
@@ -78,11 +76,11 @@ void Renderer::printBoards(Board self_board, Board other_board) const {
     std::cout << "\033[0m" << std::endl;
 }
 
-void Renderer::printException(std::exception &e) const {
+void Renderer::printException(const std::exception &e) const noexcept{
     std::cerr << "\033[1;31m" << "Exception: " << e.what() << "\033[0m" << std::endl;
 }
 
-void Renderer::printAbilityName(std::string ability_name) const {
+void Renderer::printAbilityName(const std::string &ability_name) const noexcept {
     std::cout << ability_name << std::endl;
 }
 
@@ -109,9 +107,4 @@ void Renderer::printCellValue(Board board, Coord coord) const {
             break;
         }
     }
-}
-
-void Renderer::printInfo() const {
-    std::cout << "Push i to print info, a to attack, b to use ability, l to load, s to save, q to quit. [i/a/b/l/s/q]"
-            << std::endl;
 }

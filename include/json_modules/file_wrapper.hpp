@@ -12,17 +12,13 @@
 
 class FileWrapper {
 public:
-    FileWrapper(const std::string &file_name);
-
-    ~FileWrapper();
+    explicit FileWrapper(const std::string &file_name);
 
     void read(nlohmann::json &json_file);
 
-    void write(nlohmann::json &json_file);
+    void write(const nlohmann::json &json_file);
 
-    // FileWrapper &operator>>(GameState &state);
-    //
-    // FileWrapper &operator<<(GameState &state);
+    ~FileWrapper();
 
 private:
     std::fstream file_;

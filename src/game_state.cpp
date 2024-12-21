@@ -1,19 +1,18 @@
 #include "game_state.hpp"
 
-GameState::GameState(PlayerUnit &player, BotUnit &bot): player_(player), bot_(bot),
-                                                        current_damage_(1) {
-};
+GameState::GameState(PlayerUnit &player, BotUnit &bot): player_(player), bot_(bot) {
+}
 
-std::string GameState::getHash(const std::string &data) {
-    std::hash<std::string> hash_fn;
-    size_t hash = hash_fn(data);
+std::string GameState::getHash(const std::string &data) const noexcept {
+    constexpr std::hash<std::string> hash_fn;
+    const size_t hash = hash_fn(data);
 
     std::stringstream ss;
     ss << std::hex << hash;
     return ss.str();
-};
+}
 
-FileWrapper& operator<<(FileWrapper& file_wrapper, GameState& state) {
+FileWrapper& operator<<(FileWrapper& file_wrapper, const GameState& state) {
     nlohmann::json json_file;
     nlohmann::json data;
     Serialization ser(data);
@@ -26,7 +25,7 @@ FileWrapper& operator<<(FileWrapper& file_wrapper, GameState& state) {
     data["current_damage"] = state.getCurrentDamage();
     data["is_ability_used"] = state.getIsAbilityUsed();
 
-    std::string json_string = data.dump();
+    const std::string json_string = data.dump();
 
     json_file["data"] = data;
     json_file["hash_value"] = state.getHash(json_string);
@@ -37,26 +36,31 @@ FileWrapper& operator<<(FileWrapper& file_wrapper, GameState& state) {
     catch (UnableToOpenFileException& e){
         std::cerr << e.what() << std::endl;
     }
-
     return file_wrapper;
 }
 
 FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
-    nlohmann::json j;
-
+    nlohmann::json json_file;
     try {
-        file_wrapper.read(j);
+        file_wrapper.read(json_file);
     }
     catch (UnableToOpenFileException& e) {
         std::cerr << e.what() << std::endl;
         return file_wrapper;
     }
 
-    nlohmann::json data = j.at("data");
-    std::string savedHashValue = j.at("hash_value");
+    nlohmann::json data = json_file.at("data");
+    std::string savedHashValue = json_file.at("hash_value");
 
     std::string jsonString = data.dump();
 
+<<<<<<< Updated upstream
+=======
+    if (savedHashValue != state.getHash(jsonString))
+        throw HashMismatchException();
+
+    // TODO: МЕНЯТЬ КОНСТРУКТОР
+>>>>>>> Stashed changes
     Deserialization deser(data);
     ShipManager ship_manager;
     Board board;
@@ -88,46 +92,28 @@ FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
 void GameState::placeShips(ShipManager &shipManager, Board &board) {
     for (int i = 0; i < shipManager.getShipCount(); ++i) {
         for (int j = 0; j < shipManager[i].getSize(); ++j) {
-            Coord coord = shipManager[i].getSegment(j)->segment_coord;
+            const Coord coord = shipManager[i].getSegment(j)->segment_coord;
             Board::Cell &cell = board.getCell(coord);
             cell.segment = shipManager[i].getSegment(j);
         }
     }
 }
 
-void GameState::loadGame(const std::string &file) {
-    FileWrapper file_wrapper(file);
+void GameState::loadGame(const std::string &file_name) {
+    FileWrapper file_wrapper(file_name);
     file_wrapper >> *this;
 }
 
-void GameState::saveGame(const std::string &file) {
-    std::ofstream ofs(file, std::ofstream::out | std::ofstream::trunc);
-    FileWrapper file_wrapper(file);
+void GameState::saveGame(const std::string &file_name) const {
+    std::ofstream ofs(file_name, std::ofstream::out | std::ofstream::trunc);
+    FileWrapper file_wrapper(file_name);
     file_wrapper << *this;
 }
 
-bool &GameState::getIsAbilityUsed() {
-    return this->is_ability_used_cond_;
-}
-
-int &GameState::getCurrentDamage() {
-    return this->current_damage_;
-}
-
-void GameState::setCurrentDamage(int damage) {
-    this->current_damage_ = damage;
-};
-
-void GameState::setIsAbilityUsed(bool value) {
-    this->is_ability_used_cond_ = value;
-};
-
-PlayerUnit &GameState::getPlayer() {
+PlayerUnit &GameState::getPlayer() const noexcept {
     return this->player_;
 };
 
-BotUnit &GameState::getBot() {
+BotUnit &GameState::getBot() const noexcept {
     return this->bot_;
 };
-
-GameState::~GameState() = default;

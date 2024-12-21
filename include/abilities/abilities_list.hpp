@@ -1,18 +1,7 @@
-/**
- * @file abilities_list.hpp
- * @author KorzikAlex (alek.korshkov@yandex.ru)
- * @brief 
- * @version 0.1
- * @date 2024-11-08
- * 
- * @copyright Copyright (c) 2024
- * 
- */
 #pragma once
 
 #include <iostream>
 #include <random>
-
 
 #include "structures.hpp"
 #include "board.hpp"
@@ -25,7 +14,9 @@ struct AbilityParameters {
     ShipManager &ship_manager;
     Coord &coord;
 
-    AbilityParameters(Board &board, ShipManager &sm, Coord &coord): board(board), ship_manager(sm), coord(coord) {
+    AbilityParameters(Board &board, ShipManager &ship_manager, Coord &coord): board(board),
+                                                                              ship_manager(ship_manager),
+                                                                              coord(coord) {
     }
 };
 
@@ -33,12 +24,12 @@ class Ability {
 public:
     virtual void realizeAbility() = 0;
 
-    virtual ~Ability();
+    virtual ~Ability() = default;
 };
 
-class DoubleAttack : public Ability {
+class DoubleAttack final : public Ability {
 public:
-    DoubleAttack(Board &board, Coord coord);
+    explicit DoubleAttack(Board &board, Coord coord);
 
     void realizeAbility() override;
 
@@ -47,9 +38,9 @@ private:
     Coord coord_;
 };
 
-class Scanner : public Ability {
+class Scanner final : public Ability {
 public:
-    Scanner(Board &board, Coord coord);
+    explicit Scanner(Board &board, Coord coord);
 
     void realizeAbility() override;
 
@@ -58,9 +49,9 @@ private:
     Coord coord_;
 };
 
-class RandomAttack : public Ability {
+class RandomAttack final : public Ability {
 public:
-    RandomAttack(Board &board);
+    explicit RandomAttack(Board &board);
 
     void realizeAbility() override;
 

@@ -9,12 +9,12 @@ FileWrapper::~FileWrapper() {
 
 void FileWrapper::read(nlohmann::json& json_file) {
     if (!this->file_.is_open() || !this->file_.good())
-        throw UnableToOpenFileException("Can't read the file!");
+        throw UnableToOpenFileException();
     this->file_ >> json_file;
 }
 
-void FileWrapper::write(nlohmann::json& json_file) {
+void FileWrapper::write(const nlohmann::json& json_file) {
     if (!this->file_.is_open() || !this->file_.good())
-        throw UnableToOpenFileException("Can't write the file!");
+        throw UnableToOpenFileException();
     this->file_ << json_file.dump(4);
 }

@@ -20,7 +20,7 @@ void Deserialization::from_json(ShipManager &ship_manager, std::string key) {
             segment->health = jsm.at(key).at("segments").at(j).at("health");
         }
     }
-    ship_manager.checkShips();
+    // ship_manager.checkShips();
 }
 
 void Deserialization::from_json(Board &board, std::string key) {

@@ -1,42 +1,22 @@
-/**
- * @file game.cpp
- * @author KorzikAlex (alek.korshkov@yandex.ru)
- * @brief Game class implementation file
- * @version 0.1
- * @date 2024-11-17
- * 
- * @copyright Copyright (c) 2024
- * 
- */
-
 #include "game.hpp"
 
-#include <renderer.hpp>
-
-#include "board.hpp"
-
-#include "exceptions/no_available_abilities.hpp"
-#include "exceptions/invalid_coordinate.hpp"
-#include "exceptions/revealed_cell_attack.hpp"
-
-
-Game::Game(PlayerUnit player, BotUnit bot, GameState game_state): player_(player), bot_(bot),
-                                                                  game_state_(game_state), is_bot_win_cond_(false),
-                                                                  is_player_win_cond_(false), is_game_end_cond_(false) {
+Game::Game(const PlayerUnit &player, const BotUnit &bot, const GameState &game_state,
+           const Renderer renderer): player_(player), bot_(bot), game_state_(game_state), renderer_(renderer),
+                                     is_player_win_cond_(false), is_bot_win_cond_(false), is_game_end_cond_(false) {
 };
 
 void Game::startGame() {
     std::string answer;
-    Renderer renderer;
     const std::string file = "save_file.json";
     while (!this->is_game_end_cond_) {
         std::string line;
-        std::cout << "'p' - play\t'l' - load game\n's' - save game\t'q' - quit.\n[p/l/s/q] ";
+        std::cout << "Play(p)\tLoad Game(l)\nSave Game(s)\tQuit(q)\n[p/l/s/q] ";
         std::cin >> line;
         if (line.size() == 1) {
             switch (line[0]) {
                 case 'p': {
-                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
+                    this->renderer_.printBoards(this->bot_.getBoard(),
+                                                this->player_.getBoard());
                     if (!this->game_state_.getIsAbilityUsed()) {
                         try {
                             this->doPlayerAbility();
@@ -56,25 +36,33 @@ void Game::startGame() {
                         }
                     }
 
-                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
+                    this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     try {
                         doPlayerMove();
                     } catch (OutOfRangeException &e) {
+<<<<<<< Updated upstream
                         renderer.printException(e);
+=======
+                        this->renderer_.printException(e);
+>>>>>>> Stashed changes
                     }
                     try {
                         doBotMove();
                     } catch (OutOfRangeException &e) {
+<<<<<<< Updated upstream
                         renderer.printException(e);
+=======
+                        this->renderer_.printException(e);
+>>>>>>> Stashed changes
                     }
                     this->isGameEnd();
-                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
+                    this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }
                 case 'l': {
                     std::cout << "Loading the game..." << std::endl;
                     this->loadGame(file);
-                    renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
+                    this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }
                 case 's': {
@@ -190,11 +178,14 @@ void Game::doPlayerMove() {
     }
     this->game_state_.setCurrentDamage(1);
 
+<<<<<<< Updated upstream
     if (this->player_.getBoard().isShipAtBoard(coord)) {
+=======
+    if (this->player_.getBoard().isSegmentAtCoord(coord)) {
+>>>>>>> Stashed changes
         Ship &bot_ship = this->player_.getShipManager().getShip(coord);
         if (bot_ship.isDestroyed()) {
             this->player_.getBoard().revealCoordinatesAround(bot_ship);
-            this->player_.getShipManager().checkShips();
             std::cout << "Ability added." << std::endl;
             this->player_.getAbilityManager().giveRandomAbility();
         }
@@ -208,12 +199,18 @@ void Game::doPlayerMove() {
 
 void Game::doBotMove() {
     Coord coord = this->bot_.getBoard().attackRandomly();
+<<<<<<< Updated upstream
     if (this->bot_.getBoard().isShipAtBoard(coord)) {
         Ship &player_ship = this->bot_.getShipManager().getShip(coord);
         if (player_ship.isDestroyed()) {
             this->bot_.getBoard().revealCoordinatesAround(player_ship);
             this->bot_.getShipManager().checkShips();
         }
+=======
+    if (this->bot_.getBoard().isSegmentAtCoord(coord)) {
+        Ship &player_ship = this->bot_.getShipManager().getShip(coord);
+        if (player_ship.isDestroyed()) this->bot_.getBoard().revealCoordinatesAround(player_ship);
+>>>>>>> Stashed changes
     }
     if (this->bot_.getShipManager().getShipsAlive() == 0) {
         std::cout << "You lose!" << std::endl;
@@ -232,7 +229,7 @@ void Game::doPlayerAbility() {
         Coord coord = {-1, -1};
         AbilityParameters ap(this->player_.getBoard(), this->player_.getShipManager(), coord);
         this->player_.getAbilityManager().isEmpty();
-        std::cout << this->player_.getAbilityManager().returnAbilityName() << std::endl;
+        std::cout << this->player_.getAbilityManager().returnAbilityCreator(0).getName() << std::endl;
         try {
             if (this->player_.getAbilityManager().returnAbilityCreator(0).isUsingCoordinate()) {
                 std::cout << "Give coordinates for ability." << std::endl;

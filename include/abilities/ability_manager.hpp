@@ -1,9 +1,8 @@
 #pragma once
 
 #include <queue>
-#include <algorithm>
 #include <random>
-#include <array>
+#include <algorithm>
 
 #include "abilities_list.hpp"
 #include "ability_creator.hpp"
@@ -14,21 +13,17 @@ class AbilityManager {
 public:
     AbilityManager();
 
-    int getAbilityCount() const;
+    int getAbilityCount() const noexcept;
 
     void isEmpty() const;
 
     void giveRandomAbility();
 
-    std::string returnAbilityName() const;
-
     AbilityCreator& returnAbilityCreator(int index) const;
-
-    // void useAbility(Coord coord = {-1, -1});
 
     void useAbility(AbilityParameters ap);
 
-    void popAbility();
+    void popAbility() noexcept;
 
     void addAbility(AbilityCreator* ability_creator);
 
