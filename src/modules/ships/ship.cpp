@@ -46,7 +46,7 @@ int Ship::getSize() const {
 };
 
 Ship::Segment *Ship::getSegment(int index) {
-    return &this->segments_.at(index);
+    return &this->segments_[index];
 };
 
 void Ship::info() {

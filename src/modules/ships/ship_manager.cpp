@@ -23,7 +23,7 @@ int ShipManager::getShipCount() const {
 
 Ship &ShipManager::getShip(int index) {
     if (index >= this->ships_.size() || index < 0) throw std::out_of_range("Ship index out of range");
-    return this->ships_.at(index);
+    return this->ships_[index];
 };
 
 Ship &ShipManager::getShip(Ship::Segment *segment) {

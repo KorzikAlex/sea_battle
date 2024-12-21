@@ -59,14 +59,12 @@ void Game::startGame() {
                     renderer.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     try {
                         doPlayerMove();
-                    }
-                    catch (OutOfRangeException &e) {
+                    } catch (OutOfRangeException &e) {
                         renderer.printException(e);
                     }
                     try {
                         doBotMove();
-                    }
-                    catch (OutOfRangeException &e) {
+                    } catch (OutOfRangeException &e) {
                         renderer.printException(e);
                     }
                     this->isGameEnd();
@@ -175,17 +173,12 @@ void Game::doPlayerMove() {
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 throw InvalidCoordinateException("Invalid input coords!");
             }
-
-            for (int i = 0; i < this->game_state_.getCurrentDamage(); i++) {
-                this->player_.getBoard().attack(coord);
-                successAttack = true;
-            }
+            this->player_.getBoard().attack(coord, this->game_state_.getCurrentDamage());
         } catch (InvalidCoordinateException &e) {
             std::cout << e.what() << std::endl;
             continue;
         }
         catch (RevealedCellAttackException &e) {
-            if (successAttack) break;
             std::cout << e.what() << std::endl;
             continue;
         }
@@ -198,7 +191,7 @@ void Game::doPlayerMove() {
     this->game_state_.setCurrentDamage(1);
 
     if (this->player_.getBoard().isShipAtBoard(coord)) {
-        Ship& bot_ship = this->player_.getShipManager().getShip(coord);
+        Ship &bot_ship = this->player_.getShipManager().getShip(coord);
         if (bot_ship.isDestroyed()) {
             this->player_.getBoard().revealCoordinatesAround(bot_ship);
             this->player_.getShipManager().checkShips();
@@ -216,7 +209,7 @@ void Game::doPlayerMove() {
 void Game::doBotMove() {
     Coord coord = this->bot_.getBoard().attackRandomly();
     if (this->bot_.getBoard().isShipAtBoard(coord)) {
-        Ship& player_ship = this->bot_.getShipManager().getShip(coord);
+        Ship &player_ship = this->bot_.getShipManager().getShip(coord);
         if (player_ship.isDestroyed()) {
             this->bot_.getBoard().revealCoordinatesAround(player_ship);
             this->bot_.getShipManager().checkShips();
@@ -237,7 +230,7 @@ void Game::doPlayerAbility() {
 
     if (result == "y" || result == "Y") {
         Coord coord = {-1, -1};
-        AbilityParameters ap(this->bot_.getBoard(), this->bot_.getShipManager(), coord);
+        AbilityParameters ap(this->player_.getBoard(), this->player_.getShipManager(), coord);
         this->player_.getAbilityManager().isEmpty();
         std::cout << this->player_.getAbilityManager().returnAbilityName() << std::endl;
         try {

@@ -23,6 +23,8 @@ FileWrapper& operator<<(FileWrapper& file_wrapper, GameState& state) {
     ser.to_json(state.getPlayer().getAbilityManager(), "player_ability_manager");
     ser.to_json(state.getBot().getShipManager(), "bot_ship_manager");
     ser.to_json(state.getBot().getBoard(), "bot_board");
+    data["current_damage"] = state.getCurrentDamage();
+    data["is_ability_used"] = state.getIsAbilityUsed();
 
     std::string json_string = data.dump();
 
@@ -55,10 +57,6 @@ FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
 
     std::string jsonString = data.dump();
 
-    // if (savedHashValue != state.getHash(jsonString))
-    //     throw HashMismatchException();
-
-    // TODO: МЕНЯТЬ КОНСТРУКТОР
     Deserialization deser(data);
     ShipManager ship_manager;
     Board board;

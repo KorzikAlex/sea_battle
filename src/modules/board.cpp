@@ -127,7 +127,6 @@ void Board::attack(Coord coord, int power) {
         }
         default: {
             throw RevealedCellAttackException("Cell is already revealed!");
-            break;
         }
     }
 };

@@ -9,7 +9,7 @@ void Serialization::to_json(ShipManager &ship_manager, std::string key) {
 
     for (int i = 0; i < ship_manager.getShipCount(); i++) {
         Ship &temp = ship_manager[i];
-        key = "ship" + std::to_string(i);
+        std::string key = "ship" + std::to_string(i);
         jsm[key] = {
             {"size", temp.getSize()},
             {"horizontal", temp.isHorizontal()},
@@ -32,7 +32,7 @@ void Serialization::to_json(Board &board, std::string key) {
 
     for (int y = 0; y < board.getSizeY(); y++) {
         for (int x = 0; x < board.getSizeX(); x++) {
-            key = "cell" + std::to_string(y) + std::to_string(x);
+            std::string key = "cell" + std::to_string(y) + std::to_string(x);
             jb[key] = {
                 {"status", board.getCell({x, y}).status},
                 {"value", board.getCell({x, y}).value}

@@ -10,7 +10,7 @@ void Deserialization::from_json(ShipManager &ship_manager, std::string key) {
     ship_manager = ShipManager(ship_sizes);
 
     for (size_t i = 0; i < ship_sizes.size(); i++) {
-        key = "ship" + std::to_string(i);
+        std::string key = "ship" + std::to_string(i);
         Ship &ship = ship_manager[i];
         if (jsm.at(key).at("horizontal") == true) ship.setOrientation(Ship::Orientation::kHorizontal);
         else ship.setOrientation(Ship::Orientation::kVertical);
@@ -25,14 +25,14 @@ void Deserialization::from_json(ShipManager &ship_manager, std::string key) {
 
 void Deserialization::from_json(Board &board, std::string key) {
     const auto &jf = this->json_file_.at(key);
-    board = Board(jf.at("size_y"), jf.at("size_x"));
+    board = Board(jf["size_y"], jf["size_x"]);
 
     for (int y = 0; y < board.getSizeY(); y++) {
         for (int x = 0; x < board.getSizeX(); x++) {
             key = "cell" + std::to_string(y) + std::to_string(x);
             Board::Cell &cell = board.getCell({x, y});
-            cell.status = jf.at(key).at("status");
-            cell.value = jf.at(key).at("value");
+            cell.status = jf[key]["status"];
+            cell.value = jf[key]["value"];
         }
     }
 }
