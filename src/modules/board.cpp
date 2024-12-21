@@ -117,13 +117,7 @@ void Board::attack(const Coord coord, const int power) {
             board_cell.value = Cell::CellValue::kDestroyed;
             break;
         }
-<<<<<<< Updated upstream
-        default: {
-            throw RevealedCellAttackException("Cell is already revealed!");
-        }
-=======
         default: throw RevealedCellAttackException();
->>>>>>> Stashed changes
     }
 }
 

@@ -36,15 +36,9 @@ int Ship::getSize() const noexcept {
     return this->size_;
 }
 
-<<<<<<< Updated upstream
-Ship::Segment *Ship::getSegment(int index) {
-    return &this->segments_[index];
-};
-=======
 Ship::Segment *Ship::getSegment(const int index) {
     return &this->segments_.at(index);
 }
->>>>>>> Stashed changes
 
 void Ship::changeOrientation() noexcept {
     if (this->isHorizontal()) this->orientation_ = Orientation::kVertical;
