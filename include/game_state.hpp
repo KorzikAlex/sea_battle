@@ -6,7 +6,7 @@
 
 #include "units.hpp"
 #include "json_modules/file_wrapper.hpp"
-#include "json_modules/serizalization.hpp"
+
 
 #include "exceptions/hash_mismatch.hpp"
 
@@ -25,12 +25,6 @@ public:
     PlayerUnit &getPlayer() const noexcept;
 
     BotUnit &getBot() const noexcept;
-    
-    bool& getIsAbilityUsed();
-
-    void setIsAbilityUsed(bool value) noexcept;
-
-    void setCurrentDamage(int damage);
 
     ~GameState() = default;
 

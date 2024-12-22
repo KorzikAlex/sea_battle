@@ -4,19 +4,18 @@ Serialization::Serialization(nlohmann::json& json_file): json_file_(json_file) {
 }
 
 void Serialization::to_json(ShipManager &ship_manager, std::string key) {
-    nlohmann::json jsm{};
-
-    for (int i = 0; i < ship_manager.getShipCount(); i++) {
+    nlohmann::json jsm;
+    for (int i = 0; i < ship_manager.getShipCount(); ++i) {
         Ship &temp = ship_manager[i];
-        key = "ship" + std::to_string(i);
-        jsm[key] = {
+        const std::string temp_key = "ship" + std::to_string(i);
+        jsm[temp_key] = {
             {"size", temp.getSize()},
-            {"horizontal", temp.isHorizontal()},
+            {"orientation", temp.getOrientation()},
             {"segments", nlohmann::json::array()}
         };
         for (int j = 0; j < temp.getSize(); j++) {
             Ship::Segment *tempSegment = temp.getSegment(j);
-            jsm[key]["segments"].push_back({"health", tempSegment->health});
+            jsm[temp_key]["segments"].push_back({"health", tempSegment->health});
         }
     }
 
@@ -24,7 +23,7 @@ void Serialization::to_json(ShipManager &ship_manager, std::string key) {
 }
 
 void Serialization::to_json(Board &board, std::string key) const {
-    nlohmann::json jb{};
+    nlohmann::json jb;
 
     jb["size_y"] = board.getSizeY();
     jb["size_x"] = board.getSizeX();
@@ -43,7 +42,7 @@ void Serialization::to_json(Board &board, std::string key) const {
 }
 
 void Serialization::to_json(const AbilityManager &ability_manager, const std::string &key) {
-    nlohmann::json jam{};
+    nlohmann::json jam;
 
     for (int i = 0; i < ability_manager.getAbilityCount(); i++)
         jam["abilities"].push_back(ability_manager.returnAbilityCreator(0).getName());

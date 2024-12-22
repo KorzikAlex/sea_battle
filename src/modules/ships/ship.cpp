@@ -52,7 +52,7 @@ void Ship::setOrientation(const Orientation orientation) noexcept {
 void Ship::setCoord(const Coord coord) noexcept {
     int i = 0;
     for (auto &[health, segment_coord]: this->segments_) {
-        if (this->isHorizontal()) segment_coord = {coord.x + i};
+        if (this->isHorizontal()) segment_coord = {coord.x + i, coord.y};
         else segment_coord = {coord.x, coord.y + i};
         ++i;
     }

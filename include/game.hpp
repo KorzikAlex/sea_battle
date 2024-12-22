@@ -1,10 +1,7 @@
 #pragma once
 
-#include "units.hpp"
-#include "game_state.hpp"
 #include "renderer.hpp"
-
-#include "board.hpp"
+#include "game_state.hpp"
 
 #include "exceptions/no_available_abilities.hpp"
 #include "exceptions/invalid_coordinate.hpp"
@@ -12,7 +9,7 @@
 
 class Game {
 public:
-    explicit Game(const PlayerUnit &player, const BotUnit &bot, const GameState &game_state, Renderer renderer);
+    explicit Game(const PlayerUnit &player, const BotUnit &bot, const GameState &game_state, const Renderer& renderer);
 
     void startGame();
 
@@ -24,7 +21,7 @@ public:
 
     void loadGame(const std::string &file_name);
 
-    void saveGame(const std::string &file_name);
+    void saveGame(const std::string &file_name) const;
 
     void isGameEnd();
 
@@ -32,7 +29,7 @@ public:
 
     void resetRound();
 
-    ~Game();
+    ~Game() = default;
 
 private:
     PlayerUnit player_;

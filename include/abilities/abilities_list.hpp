@@ -27,7 +27,7 @@ public:
     virtual ~Ability() = default;
 };
 
-class DoubleAttack final : public Ability {
+class DoubleAttack : public Ability {
 public:
     explicit DoubleAttack(Board &board, Coord coord);
 
@@ -38,7 +38,7 @@ private:
     Coord coord_;
 };
 
-class Scanner final : public Ability {
+class Scanner : public Ability {
 public:
     explicit Scanner(Board &board, Coord coord);
 
@@ -49,7 +49,7 @@ private:
     Coord coord_;
 };
 
-class RandomAttack final : public Ability {
+class RandomAttack : public Ability {
 public:
     explicit RandomAttack(Board &board);
 

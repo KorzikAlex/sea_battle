@@ -18,8 +18,8 @@ public:
             kDestroyed
         };
 
-        SegmentHealth health;
-        Coord segment_coord;
+        SegmentHealth health = SegmentHealth::kWhole;
+        Coord coord;
 
         void handleDamage(int power = 1) noexcept;
     };

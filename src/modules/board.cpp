@@ -71,10 +71,6 @@ bool Board::checkCoordAround(const Coord coord) noexcept {
 
 bool Board::isSegmentAtCoord(const Coord coord) noexcept {
     return this->getCell(coord).isSegmentAt();
-    // const Cell cell = this->getCell(coord);
-    // return (cell.value == Cell::CellValue::kShipPart ||
-    //         cell.value == Cell::CellValue::kDamaged ||
-    //         cell.value == Cell::CellValue::kDestroyed);
 }
 
 void Board::revealCoordinatesAround(Ship &ship) {
@@ -83,9 +79,9 @@ void Board::revealCoordinatesAround(Ship &ship) {
             for (int j = -1; j <= 1; ++j) {
                 const Ship::Segment *ship_segment = ship.getSegment(k);
                 if (const Coord segment_coord({
-                    ship_segment->segment_coord.x + i,
-                    ship_segment->segment_coord.y + j
-                }); !this->checkCoord(segment_coord)) {
+                    ship_segment->coord.x + i,
+                    ship_segment->coord.y + j
+                }); this->checkCoord(segment_coord)) {
                     Cell &board_cell = this->getCell(Coord{segment_coord});
                     if (board_cell.value != Cell::CellValue::kWaterHidden) continue;
                     board_cell.status = Cell::CellVisibilityStatus::kRevealed;
@@ -110,7 +106,9 @@ void Board::attack(const Coord coord, const int power) {
             break;
         }
         case Cell::CellValue::kShipPart: {
-            board_cell.value = Cell::CellValue::kDamaged;
+            if (power >= 2)
+                board_cell.value = Cell::CellValue::kDestroyed;
+            else board_cell.value = Cell::CellValue::kDamaged;
             break;
         }
         case Cell::CellValue::kDamaged: {
@@ -129,7 +127,8 @@ Coord Board::attackRandomly() {
 
     while (true) {
         try {
-            if (const Coord attack_coord({disX(gen), disY(gen)}); this->checkCoord(attack_coord)) {
+            if (const Coord attack_coord({disX(gen), disY(gen)});
+                this->checkCoord(attack_coord)) {
                 this->attack(attack_coord);
                 return attack_coord;
             }
@@ -152,6 +151,7 @@ void Board::setShip(Ship &ship, const Coord coord) {
                 throw IncorrectShipPositionException();
         };
         for (int i = 0; i < ship.getSize(); ++i) {
+            ship.getSegment(i)->coord = Coord{coord.x + i, coord.y};
             this->board_.at(coord.y).at(coord.x + i).segment = ship.getSegment(i);
             this->board_.at(coord.y).at(coord.x + i).value = Cell::CellValue::kShipPart;
         }
@@ -165,6 +165,7 @@ void Board::setShip(Ship &ship, const Coord coord) {
                 throw IncorrectShipPositionException();
         }
         for (int i = 0; i < ship.getSize(); ++i) {
+            ship.getSegment(i)->coord = Coord{coord.x, coord.y + i};
             this->board_.at(coord.y + i).at(coord.x).segment = ship.getSegment(i);
             this->board_.at(coord.y + i).at(coord.x).value = Cell::CellValue::kShipPart;
         }

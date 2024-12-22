@@ -56,27 +56,27 @@ FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
         throw HashMismatchException();
 
     // TODO: МЕНЯТЬ КОНСТРУКТОР
-    Deserialization deser(data);
-    ShipManager ship_manager;
-    Board board;
-    AbilityManager ability_manager;
+    // Deserialization deser(data);
+    // ShipManager ship_manager;
+    // Board board;
+    // AbilityManager ability_manager;
+    //
+    // ShipManager bot_ship_manager;
+    // Board bot_board;
 
-    ShipManager bot_ship_manager;
-    Board bot_board;
-
-    deser.from_json(ship_manager, "player_ship_manager");
-    deser.from_json(board, "player_board");
-    deser.from_json(ability_manager, "player_ability_manager");
-
-    deser.from_json(bot_ship_manager, "bot_ship_manager");
-    deser.from_json(bot_board, "bot_board");
-
-    state.getPlayer().getShipManager() = ship_manager;
-    state.getPlayer().getBoard() = board;
-    state.getPlayer().getAbilityManager() = ability_manager;
-
-    state.getBot().getShipManager() = bot_ship_manager;
-    state.getBot().getBoard() = bot_board;
+    // deser.from_json(ship_manager, "player_ship_manager");
+    // deser.from_json(board, "player_board");
+    // deser.from_json(ability_manager, "player_ability_manager");
+    //
+    // deser.from_json(bot_ship_manager, "bot_ship_manager");
+    // deser.from_json(bot_board, "bot_board");
+    //
+    // state.getPlayer().getShipManager() = ship_manager;
+    // state.getPlayer().getBoard() = board;
+    // state.getPlayer().getAbilityManager() = ability_manager;
+    //
+    // state.getBot().getShipManager() = bot_ship_manager;
+    // state.getBot().getBoard() = bot_board;
 
     state.placeShips(state.getPlayer().getShipManager(), state.getPlayer().getBoard());
     state.placeShips(state.getBot().getShipManager(), state.getBot().getBoard());
@@ -87,7 +87,7 @@ FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
 void GameState::placeShips(ShipManager &shipManager, Board &board) {
     for (int i = 0; i < shipManager.getShipCount(); ++i) {
         for (int j = 0; j < shipManager[i].getSize(); ++j) {
-            const Coord coord = shipManager[i].getSegment(j)->segment_coord;
+            const Coord coord = shipManager[i].getSegment(j)->coord;
             Board::Cell &cell = board.getCell(coord);
             cell.segment = shipManager[i].getSegment(j);
         }

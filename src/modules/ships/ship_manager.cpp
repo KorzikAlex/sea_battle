@@ -1,6 +1,9 @@
 #include "ships/ship_manager.hpp"
 
-ShipManager::ShipManager(std::vector<int> sizes): ships_(sizes.begin(), sizes.end()) {
+ShipManager::ShipManager(std::vector<int> sizes){
+    for (auto size : sizes) {
+        this->addShip(size, Ship::Orientation::kHorizontal);
+    }
 }
 
 Ship &ShipManager::operator[](const int index) {
@@ -24,8 +27,8 @@ Ship &ShipManager::getShip(const Ship::Segment *segment) {
 
 Ship &ShipManager::getShip(const Coord coord) {
     for (Ship &ship: this->ships_)
-        for (int i = 0; i < ship.getSize(); i++)
-            if (ship.getSegment(i)->segment_coord.x == coord.x && ship.getSegment(i)->segment_coord.y == coord.y)
+        for (int i = 0; i < ship.getSize(); ++i)
+            if (ship.getSegment(i)->coord.x == coord.x && ship.getSegment(i)->coord.y == coord.y)
                 return ship;
     throw OutOfRangeException();
 }

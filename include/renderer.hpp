@@ -14,9 +14,13 @@ public:
 
     void printException(const std::exception &e) const noexcept;
 
+    void printException(const std::string &message) const noexcept;
+
     void printAbilityName(const std::string &ability_name) const noexcept;
 
     void printCellValue(Board board, Coord coord) const;
+
+    void clear_console() const noexcept;
 
     ~Renderer() = default;
 };

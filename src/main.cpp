@@ -1,27 +1,20 @@
 #include <iostream>
 
-#include "renderer.hpp"
 #include "cli_parser.hpp"
-
-#include "board.hpp"
-#include "ships/ship_manager.hpp"
-#include "abilities/ability_manager.hpp"
-#include "units.hpp"
 #include "game.hpp"
-#include "game_state.hpp"
 
 #include "exceptions/invalid_ship_size.hpp"
 
 
 int main(int argc, char **argv) {
     CLIParser cli_parser(argc, argv);
-    Renderer renderer{};
+    Renderer renderer;
 
     const int kSizeX = cli_parser.getSizeX(), kSizeY = cli_parser.getSizeY();
     Board player_board(kSizeX, kSizeY);
     Board bot_board(kSizeX, kSizeY);
 
-    const std::vector default_ship_sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    const std::vector default_ship_sizes({4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
     try {
         for (auto &size: default_ship_sizes)
             if (size < 1 || size > 4)
@@ -39,7 +32,7 @@ int main(int argc, char **argv) {
     }
 
     player_board.revealCells();
-    // bot_board.revealCells();
+    bot_board.revealCells();
     renderer.printBoards(player_board, bot_board);
 
     AbilityManager player_ability_manager;

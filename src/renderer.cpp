@@ -76,9 +76,14 @@ void Renderer::printBoards(Board self_board, Board other_board) const {
     std::cout << "\033[0m" << std::endl;
 }
 
-void Renderer::printException(const std::exception &e) const noexcept{
+void Renderer::printException(const std::exception &e) const noexcept {
     std::cerr << "\033[1;31m" << "Exception: " << e.what() << "\033[0m" << std::endl;
 }
+
+void Renderer::printException(const std::string &message) const noexcept {
+    std::cerr << "\033[1;31m" << "Exception: " << message << std::endl;
+}
+
 
 void Renderer::printAbilityName(const std::string &ability_name) const noexcept {
     std::cout << ability_name << std::endl;
@@ -107,4 +112,12 @@ void Renderer::printCellValue(Board board, Coord coord) const {
             break;
         }
     }
+}
+
+void Renderer::clear_console() const noexcept {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
