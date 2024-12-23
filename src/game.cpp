@@ -50,9 +50,9 @@ void Game::startGame() {
                     break;
                 }
                 case 'l': {
+                    this->renderer_.clear_console();
                     std::cout << "Loading the game..." << std::endl;
                     this->loadGame(file_name);
-                    this->renderer_.clear_console();
                     this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }

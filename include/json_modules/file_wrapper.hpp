@@ -3,8 +3,6 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-#include "game_state.hpp"
-
 #include "exceptions/unable_to_open_file.hpp"
 
 class FileWrapper {

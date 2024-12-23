@@ -53,25 +53,24 @@ FileWrapper &operator>>(FileWrapper &file_wrapper, GameState &state) {
         savedHashValue != state.getHash(jsonString))
         throw HashMismatchException();
 
-    // TODO: МЕНЯТЬ КОНСТРУКТОР
     Deserialization deser(data);
-    ShipManager ship_manager;
-    Board board;
-    AbilityManager ability_manager;
+    ShipManager player_ship_manager;
+    Board player_board;
+    AbilityManager player_ability_manager;
 
     ShipManager bot_ship_manager;
     Board bot_board;
 
-    deser.from_json(ship_manager, "player_ship_manager");
-    deser.from_json(board, "player_board");
-    deser.from_json(ability_manager, "player_ability_manager");
+    deser.from_json(player_ship_manager, "player_ship_manager");
+    deser.from_json(player_board, "player_board");
+    deser.from_json(player_ability_manager, "player_ability_manager");
 
     deser.from_json(bot_ship_manager, "bot_ship_manager");
     deser.from_json(bot_board, "bot_board");
 
-    state.getPlayer().getShipManager() = ship_manager;
-    state.getPlayer().getBoard() = board;
-    state.getPlayer().getAbilityManager() = ability_manager;
+    state.getPlayer().getShipManager() = player_ship_manager;
+    state.getPlayer().getBoard() = player_board;
+    state.getPlayer().getAbilityManager() = player_ability_manager;
 
     state.getBot().getShipManager() = bot_ship_manager;
     state.getBot().getBoard() = bot_board;

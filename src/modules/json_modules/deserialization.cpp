@@ -2,7 +2,7 @@
 Deserialization::Deserialization(nlohmann::json& json_file) : json_file_(json_file) {};
 
 void Deserialization::from_json(ShipManager &ship_manager, const std::string &key) {
-    const auto &jsm = this->json_file_[key];
+    const auto &jsm = this->json_file_.at(key);
     std::vector<int> ship_sizes;
 
     for (const auto &jship: jsm) ship_sizes.push_back(jship["size"]);
@@ -12,7 +12,7 @@ void Deserialization::from_json(ShipManager &ship_manager, const std::string &ke
     for (size_t i = 0; i < ship_sizes.size(); i++) {
         std::string temp_key = "ship" + std::to_string(i);
         Ship &ship = ship_manager[i];
-        if (jsm[temp_key]["horizontal"] == true) ship.setOrientation(Ship::Orientation::kHorizontal);
+        if (jsm.at(temp_key).at("orientation") == false) ship.setOrientation(Ship::Orientation::kHorizontal);
         else ship.setOrientation(Ship::Orientation::kVertical);
 
         for (int j = 0; j < ship_sizes[i]; j++) {
