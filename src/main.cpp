@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     }
 
     player_board.revealCells();
-    bot_board.revealCells();
+    // bot_board.revealCells();
     renderer.printBoards(player_board, bot_board);
 
     AbilityManager player_ability_manager;

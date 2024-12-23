@@ -54,4 +54,4 @@ void Serialization::to_json(const AbilityManager &ability_manager, const std::st
 }
 
 
-Serialization::~Serialization() = default;
+

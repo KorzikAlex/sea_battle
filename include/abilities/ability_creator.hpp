@@ -11,7 +11,7 @@ public:
 
     virtual bool isUsingCoordinate() const noexcept = 0;
 
-    virtual ~AbilityCreator() = default;
+    virtual ~AbilityCreator() {}
 };
 
 class DoubleAttackAbilityCreator : public AbilityCreator {

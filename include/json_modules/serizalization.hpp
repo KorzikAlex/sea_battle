@@ -18,7 +18,7 @@ public:
 
     void to_json(const AbilityManager &ability_manager, const std::string &key);
 
-    ~Serialization();
+    ~Serialization() = default;
 
 private:
     nlohmann::json &json_file_;

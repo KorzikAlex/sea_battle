@@ -36,14 +36,14 @@ void Deserialization::from_json(Board &board, std::string key) {
     }
 }
 
-void Deserialization::from_json(AbilityManager &abilityManager, std::string key) {
+void Deserialization::from_json(AbilityManager &ability_manager, std::string key) {
     const auto &jam = this->json_file_.at(key);
-    // abilityManager = AbilityManager();
-    abilityManager.popAbility();
+    ability_manager = AbilityManager();
+    ability_manager.popAbility();
 
     for (const auto &jability: jam.at("abilities")) {
-        if (jability == "DoubleAttack") abilityManager.addAbility(new DoubleAttackAbilityCreator());
-        else if (jability == "Scanner") abilityManager.addAbility(new ScannerAbilityCreator());
-        else if (jability == "RandomAttack") abilityManager.addAbility(new RandomAttackAbilityCreator());
+        if (jability == "DoubleAttack") ability_manager.addAbility(new DoubleAttackAbilityCreator());
+        else if (jability == "Scanner") ability_manager.addAbility(new ScannerAbilityCreator());
+        else if (jability == "RandomAttack") ability_manager.addAbility(new RandomAttackAbilityCreator());
     }
 }

@@ -22,7 +22,7 @@ void AbilityManager::isEmpty() const {
     if (this->abilities_.empty()) throw NoAvailableAbilitiesException();
 }
 
-void AbilityManager::addAbility(AbilityCreator* ability_creator) {
+void AbilityManager::addAbility(AbilityCreator *ability_creator) {
     this->abilities_.push(ability_creator);
 }
 
@@ -32,7 +32,7 @@ void AbilityManager::popAbility() noexcept {
 
 void AbilityManager::useAbility(AbilityParameters ap) {
     this->isEmpty();
-    AbilityCreator* ability = this->abilities_.front();
+    AbilityCreator *ability = this->abilities_.front();
     ability->createAbility(ap)->realizeAbility();
     delete ability;
     this->abilities_.pop();
@@ -58,16 +58,13 @@ void AbilityManager::giveRandomAbility() {
     }
 }
 
-AbilityCreator& AbilityManager::returnAbilityCreator(const int index) const {
+AbilityCreator &AbilityManager::returnAbilityCreator(const int index) const {
     this->isEmpty();
-    std::queue<AbilityCreator*> tmp = this->abilities_;
+    std::queue<AbilityCreator *> tmp = this->abilities_;
     for (int i = 0; i < index; ++i) tmp.pop();
     return *tmp.front();
 }
 
 AbilityManager::~AbilityManager() {
-    while (!this->abilities_.empty()) {
-        delete this->abilities_.front();
-        this->abilities_.pop();
-    }
+    while (!this->abilities_.empty()) this->abilities_.pop();
 }
