@@ -1,70 +1,43 @@
-/**
- * @file game.hpp
- * @author KorzikAlex (alek.korshkov@yandex.ru)
- * @brief Class of game
- * @version 0.2
- * @date 2024-11-15
- *
- * @copyright Copyright (c) 2024
- *
- */
-#ifndef SEABATTLE_INCLUDE_GAME_HPP
-#define SEABATTLE_INCLUDE_GAME_HPP
+#pragma once
 
-#include "cli_parser.hpp"
+#include "renderer.hpp"
+#include "game_state.hpp"
 
-/**
- * @class Game
- * @brief Manages the initialization and setup of the game.
- *
- * This class is responsible for parsing command-line arguments, initializing the game board,
- * setting up ships, and managing game abilities.
- */
+#include "exceptions/no_available_abilities.hpp"
+#include "exceptions/invalid_coordinate.hpp"
+#include "exceptions/revealed_cell_attack.hpp"
+
 class Game {
 public:
-    /**
-     * @brief Constructs a Game object.
-     *
-     * Initializes the game by setting up command-line arguments and creating a CLIParser instance.
-     *
-     * @param argc Number of command-line arguments.
-     * @param argv Array of command-line arguments.
-    */
-    explicit Game(int argc, char **argv);
+    explicit Game(const PlayerUnit &player, const BotUnit &bot, const GameState &game_state, const Renderer& renderer);
 
-    /**
-     * @brief Initializes the game setup.
-     *
-     * Sets up the game board, initializes ships, and manages game abilities by parsing command-line arguments.
-     *
-     * @return bool Returns true if the game initializes successfully, otherwise false.
-     */
-    bool initGame() const;
+    void startGame();
+
+    void doPlayerMove();
+
+    void doBotMove();
+
+    void doPlayerAbility();
+
+    void loadGame(const std::string &file_name);
+
+    void saveGame(const std::string &file_name) const;
+
+    void isGameEnd();
+
+    void resetGame();
+
+    void resetRound();
+
+    ~Game() = default;
 
 private:
-    /**
-    * @var Game::argc_
-    * @brief The number of command-line arguments.
-    *
-    * This variable stores the total count of command-line arguments passed to the program.
-    * It is used to initialize and manage the game setup based on user inputs through the command line.
-    */
-    int argc_;
-    /**
-     * @var Game::argv_
-     * @brief Array of command-line arguments.
-     *
-     * This variable stores the command-line arguments passed to the program. It is used in conjunction with argc_ to parse and initialize the game settings using command-line inputs.
-     */
-    char **argv_;
-    /**
-     * @var Game::parser_
-     * @brief A command-line interface parser instance.
-     *
-     * This object is responsible for parsing command-line arguments to extract game settings such as board dimensions.
-     * It is instantiated using the provided command-line arguments and used throughout the Game class to manage input processing.
-     */
-    CLIParser parser_;
-};
+    PlayerUnit player_;
+    BotUnit bot_;
+    GameState game_state_;
+    Renderer renderer_;
 
-#endif //SEABATTLE_INCLUDE_GAME_HPP
+    bool is_player_win_cond_;
+    bool is_bot_win_cond_;
+    bool is_game_end_cond_;
+};

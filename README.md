@@ -1,5 +1,7 @@
 # SeaBattle project
 
+**NEED TO CHECKING ON BOTH SYSTEMS AND SCRIPTS**
+
 To **build** a project you need to run this command (for Linux):
 
 ```bash

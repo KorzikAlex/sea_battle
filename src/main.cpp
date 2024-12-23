@@ -1,31 +1,47 @@
-/**
- * @file main.cpp
- * @author KorzikAlex (alek.korshkov@yandex.ru)
- * @brief Main program file
- * @version 0.1
- * @date 2024-10-06
- * 
- * @copyright Copyright (c) 2024
- * 
- */
 #include <iostream>
 
+#include "cli_parser.hpp"
 #include "game.hpp"
 
-/**
- * @brief Entry point of the program.
- *
- * This function initializes the game and checks for successful initialization.
- * If initialization fails, it outputs an error message.
- *
- * @param argc Number of command-line arguments.
- * @param argv Array of command-line arguments.
- * @return int Returns EXIT_SUCCESS if the game initializes successfully, otherwise EXIT_FAILURE.
- */
+#include "exceptions/invalid_ship_size.hpp"
+
+
 int main(int argc, char **argv) {
-    if (const Game game(argc, argv); !game.initGame()) { // create object of game and start it
-        std::cerr << "Ошибка инициализации игры." << std::endl; // initGame return false
-        return EXIT_FAILURE; // return 1
+    CLIParser cli_parser(argc, argv);
+    Renderer renderer;
+
+    const int kSizeX = cli_parser.getSizeX(), kSizeY = cli_parser.getSizeY();
+    Board player_board(kSizeX, kSizeY);
+    Board bot_board(kSizeX, kSizeY);
+
+    const std::vector default_ship_sizes({4, 3, 3, 2, 2, 2, 1, 1, 1, 1});
+    try {
+        for (auto &size: default_ship_sizes)
+            if (size < 1 || size > 4)
+                throw InvalidShipSizeException();
+    } catch (InvalidShipSizeException &e) {
+        renderer.printException(e);
+        return EXIT_FAILURE;
     }
-    return EXIT_SUCCESS; //return 0
+
+    ShipManager player_ship_manager(default_ship_sizes);
+    ShipManager bot_ship_manager(default_ship_sizes);
+    for (std::size_t i = 0; i < default_ship_sizes.size(); ++i) {
+        player_board.setShipRandomly(player_ship_manager[i]);
+        bot_board.setShipRandomly(bot_ship_manager[i]);
+    }
+
+    player_board.revealCells();
+    bot_board.revealCells();
+    renderer.printBoards(player_board, bot_board);
+
+    AbilityManager player_ability_manager;
+    PlayerUnit player(bot_ship_manager, bot_board, player_ability_manager);
+    BotUnit bot(player_ship_manager, player_board);
+
+    GameState game_state(player, bot);
+    Game game(player, bot, game_state, renderer);
+    game.startGame();
+
+    return EXIT_SUCCESS;
 };

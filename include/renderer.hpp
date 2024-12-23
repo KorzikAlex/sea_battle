@@ -1,16 +1,26 @@
-#ifndef SEABATTLE_INCLUDE_RENDERER_HPP
-#define SEABATTLE_INCLUDE_RENDERER_HPP
+#pragma once
 
-#include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "board.hpp"
 
 class Renderer {
 public:
-    Renderer();
-    void drawGrid(sf::RenderWindow &window, int startX, int startY);
-    ~Renderer();
+    Renderer() = default;
 
-private:
-    sf::RenderWindow window;
+    void printBoard(Board board) const;
+
+    void printBoards(Board self_board, Board other_board) const;
+
+    void printException(const std::exception &e) const noexcept;
+
+    void printException(const std::string &message) const noexcept;
+
+    void printAbilityName(const std::string &ability_name) const noexcept;
+
+    void printCellValue(Board board, Coord coord) const;
+
+    void clear_console() const noexcept;
+
+    ~Renderer() = default;
 };
-
-#endif // SEABATTLE_INCLUDE_RENDERER_HPP
