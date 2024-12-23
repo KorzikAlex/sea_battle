@@ -35,6 +35,7 @@ public:
         bool isSegmentAt() const noexcept;
     };
 
+    explicit Board(): size_x_(0), size_y_(0) {}
     explicit Board(int size_x, int size_y);
 
     Board(const Board &other) noexcept;

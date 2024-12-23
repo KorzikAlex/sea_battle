@@ -1,31 +1,30 @@
 #include "json_modules/deserialization.hpp"
 Deserialization::Deserialization(nlohmann::json& json_file) : json_file_(json_file) {};
 
-void Deserialization::from_json(ShipManager &ship_manager, std::string key) {
-    const auto &jsm = this->json_file_.at(key);
+void Deserialization::from_json(ShipManager &ship_manager, const std::string &key) {
+    const auto &jsm = this->json_file_[key];
     std::vector<int> ship_sizes;
 
-    for (const auto &jship: jsm) ship_sizes.push_back(jship.at("size"));
+    for (const auto &jship: jsm) ship_sizes.push_back(jship["size"]);
 
     ship_manager = ShipManager(ship_sizes);
 
     for (size_t i = 0; i < ship_sizes.size(); i++) {
-        key = "ship" + std::to_string(i);
+        std::string temp_key = "ship" + std::to_string(i);
         Ship &ship = ship_manager[i];
-        if (jsm.at(key).at("horizontal") == true) ship.setOrientation(Ship::Orientation::kHorizontal);
+        if (jsm[temp_key]["horizontal"] == true) ship.setOrientation(Ship::Orientation::kHorizontal);
         else ship.setOrientation(Ship::Orientation::kVertical);
 
         for (int j = 0; j < ship_sizes[i]; j++) {
             Ship::Segment *segment = ship.getSegment(j);
-            segment->health = jsm.at(key).at("segments").at(j).at("health");
+            segment->health = jsm[temp_key]["segments"][j]["health"];
         }
     }
-    // ship_manager.checkShips();
 }
 
 void Deserialization::from_json(Board &board, std::string key) {
     const auto &jf = this->json_file_.at(key);
-    board = Board(jf.at("size_y"), jf.at("size_x"));
+    board = Board(jf["size_x"], jf["size_y"]);
 
     for (int y = 0; y < board.getSizeY(); y++) {
         for (int x = 0; x < board.getSizeX(); x++) {

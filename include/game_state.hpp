@@ -6,7 +6,8 @@
 
 #include "units.hpp"
 #include "json_modules/file_wrapper.hpp"
-
+#include "json_modules/deserialization.hpp"
+#include "json_modules/serizalization.hpp"
 
 #include "exceptions/hash_mismatch.hpp"
 

@@ -12,9 +12,9 @@ class Serialization {
 public:
     explicit Serialization(nlohmann::json &json_file);
 
-    void to_json(ShipManager &ship_manager, std::string key);
+    void to_json(ShipManager &ship_manager, const std::string &key);
 
-    void to_json(Board &board, std::string key) const;
+    void to_json(Board &board, const std::string &key) const;
 
     void to_json(const AbilityManager &ability_manager, const std::string &key);
 

@@ -7,7 +7,7 @@ Game::Game(const PlayerUnit &player, const BotUnit &bot, const GameState &game_s
 
 void Game::startGame() {
     std::string answer;
-    const std::string file = "data/save_file.json";
+    const std::string file_name = "save_file.json";
     while (!this->is_game_end_cond_) {
         std::string line;
         std::cout << "Play(p)\tLoad Game(l)\nSave Game(s)\tQuit(q)\n[p/l/s/q] ";
@@ -31,7 +31,7 @@ void Game::startGame() {
                     std::cout << "Do you want to save the game? [Y/n] ";
                     std::cin >> answer;
                     if (answer == "y" || answer == "Y") {
-                        this->saveGame(file);
+                        this->saveGame(file_name);
                         break;
                     }
                     this->renderer_.clear_console();
@@ -51,14 +51,14 @@ void Game::startGame() {
                 }
                 case 'l': {
                     std::cout << "Loading the game..." << std::endl;
-                    this->loadGame(file);
+                    this->loadGame(file_name);
                     this->renderer_.clear_console();
                     this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     break;
                 }
                 case 's': {
                     std::cout << "Saving the game..." << std::endl;
-                    this->saveGame(file);
+                    this->saveGame(file_name);
                     break;
                 }
                 case 'q': {

@@ -12,7 +12,7 @@ std::string GameState::getHash(const std::string &data) const noexcept {
     return ss.str();
 }
 
-FileWrapper& operator<<(FileWrapper& file_wrapper, const GameState& state) {
+FileWrapper &operator<<(FileWrapper &file_wrapper, const GameState &state) {
     nlohmann::json json_file;
     nlohmann::json data;
     Serialization ser(data);
@@ -20,6 +20,7 @@ FileWrapper& operator<<(FileWrapper& file_wrapper, const GameState& state) {
     ser.to_json(state.getPlayer().getShipManager(), "player_ship_manager");
     ser.to_json(state.getPlayer().getBoard(), "player_board");
     ser.to_json(state.getPlayer().getAbilityManager(), "player_ability_manager");
+
     ser.to_json(state.getBot().getShipManager(), "bot_ship_manager");
     ser.to_json(state.getBot().getBoard(), "bot_board");
 
@@ -30,53 +31,50 @@ FileWrapper& operator<<(FileWrapper& file_wrapper, const GameState& state) {
 
     try {
         file_wrapper.write(json_file);
-    }
-    catch (UnableToOpenFileException& e){
+    } catch (UnableToOpenFileException &e) {
         std::cerr << e.what() << std::endl;
     }
     return file_wrapper;
 }
 
-FileWrapper &operator>>(FileWrapper& file_wrapper, GameState &state) {
+FileWrapper &operator>>(FileWrapper &file_wrapper, GameState &state) {
     nlohmann::json json_file;
     try {
         file_wrapper.read(json_file);
-    }
-    catch (UnableToOpenFileException& e) {
+    } catch (UnableToOpenFileException &e) {
         std::cerr << e.what() << std::endl;
         return file_wrapper;
     }
 
-    nlohmann::json data = json_file.at("data");
-    std::string savedHashValue = json_file.at("hash_value");
+    nlohmann::json data = json_file["data"];
+    const std::string savedHashValue = json_file["hash_value"];
 
-    std::string jsonString = data.dump();
-
-    if (savedHashValue != state.getHash(jsonString))
+    if (const std::string jsonString = data.dump();
+        savedHashValue != state.getHash(jsonString))
         throw HashMismatchException();
 
     // TODO: МЕНЯТЬ КОНСТРУКТОР
-    // Deserialization deser(data);
-    // ShipManager ship_manager;
-    // Board board;
-    // AbilityManager ability_manager;
-    //
-    // ShipManager bot_ship_manager;
-    // Board bot_board;
+    Deserialization deser(data);
+    ShipManager ship_manager;
+    Board board;
+    AbilityManager ability_manager;
 
-    // deser.from_json(ship_manager, "player_ship_manager");
-    // deser.from_json(board, "player_board");
-    // deser.from_json(ability_manager, "player_ability_manager");
-    //
-    // deser.from_json(bot_ship_manager, "bot_ship_manager");
-    // deser.from_json(bot_board, "bot_board");
-    //
-    // state.getPlayer().getShipManager() = ship_manager;
-    // state.getPlayer().getBoard() = board;
-    // state.getPlayer().getAbilityManager() = ability_manager;
-    //
-    // state.getBot().getShipManager() = bot_ship_manager;
-    // state.getBot().getBoard() = bot_board;
+    ShipManager bot_ship_manager;
+    Board bot_board;
+
+    deser.from_json(ship_manager, "player_ship_manager");
+    deser.from_json(board, "player_board");
+    deser.from_json(ability_manager, "player_ability_manager");
+
+    deser.from_json(bot_ship_manager, "bot_ship_manager");
+    deser.from_json(bot_board, "bot_board");
+
+    state.getPlayer().getShipManager() = ship_manager;
+    state.getPlayer().getBoard() = board;
+    state.getPlayer().getAbilityManager() = ability_manager;
+
+    state.getBot().getShipManager() = bot_ship_manager;
+    state.getBot().getBoard() = bot_board;
 
     state.placeShips(state.getPlayer().getShipManager(), state.getPlayer().getBoard());
     state.placeShips(state.getBot().getShipManager(), state.getBot().getBoard());

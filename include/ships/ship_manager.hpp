@@ -8,6 +8,7 @@
 
 class ShipManager {
 public:
+    explicit ShipManager() : ships_({}) {};
     explicit ShipManager(std::vector<int> sizes);
 
     Ship &operator[](int index);
