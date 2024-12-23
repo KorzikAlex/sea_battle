@@ -28,13 +28,6 @@ void Game::startGame() {
                         this->renderer_.printException(e);
                         break;
                     }
-                    std::cout << "Do you want to save the game? [Y/n] ";
-                    std::cin >> answer;
-                    if (answer == "y" || answer == "Y") {
-                        this->saveGame(file_name);
-                        break;
-                    }
-                    this->renderer_.clear_console();
                     this->renderer_.printBoards(this->bot_.getBoard(), this->player_.getBoard());
                     try {
                         doPlayerMove();
@@ -192,7 +185,6 @@ void Game::doBotMove() {
 }
 
 void Game::doPlayerAbility() {
-    std::cout << "You have " << this->player_.getAbilityManager().getAbilityCount() << " abilities available! ";
     std::cout << "Use random ability? [Y/n] ";
     std::string result;
     std::cin >> result;

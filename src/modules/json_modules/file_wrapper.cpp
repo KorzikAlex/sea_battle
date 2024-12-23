@@ -8,7 +8,7 @@ FileWrapper::~FileWrapper() {
 }
 
 void FileWrapper::read(nlohmann::json& json_file) {
-    if (!this->file_.is_open() || !this->file_.good())
+    if (!this->file_.is_open() || !this->file_.good() || this->file_.peek() == EOF)
         throw UnableToOpenFileException();
     this->file_ >> json_file;
 }
